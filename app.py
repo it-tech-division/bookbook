@@ -3,7 +3,6 @@ from data import Books
 
 
 app = Flask(__name__)
-#
 
 
 book_list = Books()
