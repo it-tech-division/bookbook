@@ -1,14 +1,20 @@
 from flask import Flask, render_template, request, url_for
 from data import Books
-
+from book import BookInfo	
 
 app = Flask(__name__)
-book_list = Books()
 
+
+book_list = Books()
 
 @app.route('/')
 def index():
-    return render_template('home.html', books=book_list)
+	book_list=BookInfo.Search_DB("%","title")
+	new_list=[]
+	for item in book_list:
+		item['image'] = item['image'].split('?')[0]
+		new_list.append(item)	
+	return render_template('home.html', books=new_list)
 
 @app.route('/about')
 def about():
@@ -27,19 +33,16 @@ def print_holder():
     return render_template('holder.js')
 
 #@app.route('/search/<string:query>')
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['POST','GET'])
 def search():
-    query = request.form['query'].lower()
-    result_list = []
-
-    for book in book_list:
-        book_title = book['title'].lower()
-        if book_title.find(query) != -1:
-            result_list.append(book)
-
-    return render_template('home.html', books=result_list)
+	query = request.form['query'].lower()
+	result_list=BookInfo.Search_DB(query,"title")
+	new_list = []
+	for item in result_list:
+		item['image'] = item['image'].split('?')[0]
+		new_list.append(item)	
+	return render_template('home.html', books=new_list)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8000)
-##
+    app.run(debug=True, host='0.0.0.0', port=80)
