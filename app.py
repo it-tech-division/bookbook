@@ -27,7 +27,11 @@ def books():
 @app.route('/book/<string:id>')
 def book(id):
     return render_template('book.html', id=id)
-
+	
+@app.route('/scan')
+def scan():
+	return render_template('scan.html')
+	
 @app.route('/holder')
 def print_holder():
     return render_template('holder.js')
@@ -45,4 +49,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+	app.run(debug=True, host='0.0.0.0', port=80)
