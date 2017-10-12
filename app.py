@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, url_for
 from data import Books
-from book import BookInfo
+from book import BookInfo	
 
 app = Flask(__name__)
-book_list = Books()
 
+
+book_list = Books()
 
 @app.route('/')
 def index():
@@ -12,7 +13,7 @@ def index():
 	new_list=[]
 	for item in book_list:
 		item['image'] = item['image'].split('?')[0]
-		new_list.append(item)
+		new_list.append(item)	
 	return render_template('home.html', books=new_list)
 
 @app.route('/about')
@@ -43,7 +44,7 @@ def search():
 	new_list = []
 	for item in result_list:
 		item['image'] = item['image'].split('?')[0]
-		new_list.append(item)
+		new_list.append(item)	
 	return render_template('home.html', books=new_list)
 
 
