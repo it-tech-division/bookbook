@@ -1,7 +1,6 @@
+create database hyundai_book;
 
-create database hyundai_book
-
-use hyundai_book
+use hyundai_book;
 
 create table book_info (
 	NO INT(11) unsigned NOT NULL,
@@ -23,5 +22,5 @@ create table book_log (
 	BOOK_LENDER_EMAIL varchar(30),
 	BOOK_LENDDATE DATE NOT NULL,
 	BOOK_RETURNDATE DATE
-	)
+	);
 	
