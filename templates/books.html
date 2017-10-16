@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Books</h1>
+  <ul class="list-groupp">
+  {% for book in books %}
+    <li class="list-group-item"><a href="book/{{book.id}}">{{book.title}}</a></li>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'layout.html' %} {% block body %}
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading">Album example</h1>
+    <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+    <p>
+      <a href="#" class="btn btn-primary">Main call to action</a>
+      <a href="#" class="btn btn-secondary">Secondary action</a>
+    </p>
+  </div>
+</section>
+
+<div class="album text-muted">
+  <div class="container">
+    <div class="row">
+      {% for book in books %}
+
+      <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+        <div class="card">
+          <a href="{{book.link}}"><img class="card-img-top" src="{{book.image}}"></a>
+          <div class="card-block">
+            <h4 class="card-title">{{book.title}}</h4>
+            <div class="card-text">
+              <small>{{book.author}} ({{book.created_date}})</small>
+              <button class="btn btn-primary float-right btn-sm">대여하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+      <!--
+      <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+        <div class="card">
+          <img class="card-img-top" src="http://bookthumb.phinf.naver.net/cover/074/180/07418047.jpg">
+          <div class="card-block">
+            <h4 class="card-title">Python Cookbook</h4>
+            <div class="card-text">
+            </div>
+          </div>
+          <div class="card-footer">
+            <small>홍길동 (2017-10-10)</small>
+            <button class="btn btn-primary float-right btn-sm">대여하기</button>
+          </div>
+        </div>
+      </div>
+    -->
+
+      <!--
+      <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+        <div class="card">
+          <img class="card-img-top" src="http://bookthumb.phinf.naver.net/cover/088/890/08889046.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">유시민의 글쓰기 특강</h4>
+            <p class="card-text">홍길동 (2017-10-10)</p>
+            <a href="#" class="btn btn-primary">대여하기</a>
+          </div>
+        </div>
+      </div>
+    -->
+    </div>
+  </div>
+</div>
+
+  <p><p>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+      <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+      <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
+    </div>
+  </footer>
+  {% endblock %}
