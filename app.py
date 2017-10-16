@@ -42,6 +42,10 @@ def search():
 		new_list.append(item)
 	return render_template('home.html', books=new_list)
 
+@app.route('/scan')
+def scan():
+    return render_template('scan.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)
