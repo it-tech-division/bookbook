@@ -3,8 +3,8 @@ from data import Books
 from book import BookInfo	
 
 app = Flask(__name__)
-
 book_list = Books()
+
 
 @app.route('/')
 def index():
