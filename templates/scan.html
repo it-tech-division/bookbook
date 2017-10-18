@@ -1,19 +1,16 @@
-{% extends 'layout.html' %}
 
-{% block body %}
-<meta charset=utf-8>
-<html lang="en">
-	<head>
-		<title>JOB</title>
-	</head>
-	<body>
+		<a href="StreamDemo.html" style="position:absolute;left:350px;">GetUserMedia Demo</a>
 		<div id="container">
 			<canvas width="320" height="240" id="picture"></canvas>
 			<input id="Take-Picture" type="file" accept="image/*;capture=camera" />
 			<p id="textbit"></p>
 		</div>
+<<<<<<< HEAD
+		<script type="text/javascript" src="static/BarcodeReader.js"></script>
+=======
 		<script type="text/javascript" src="{{ url_for('static', filename='job.js') }}"></script>
 		
+>>>>>>> 5860b84eb15c2511d6867797dc14e3d19083bee8
 		<script type="text/javascript">
 			var takePicture = document.querySelector("#Take-Picture"),
 			showPicture = document.createElement("img");
@@ -88,6 +85,10 @@
 				};
 			}
 		</script>
+<<<<<<< HEAD
+
+=======
 	</body>
 </html>
 {% endblock %}
+>>>>>>> 5860b84eb15c2511d6867797dc14e3d19083bee8

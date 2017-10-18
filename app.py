@@ -34,6 +34,10 @@ def scan():
 def scroll():
     return render_template('scroll.html')
 
+@app.route('/regist')
+def regist_book():
+    return render_template('registBook.html')
+	
 #@app.route('/search/<string:query>')
 @app.route('/search', methods=['POST','GET'])
 def search():
