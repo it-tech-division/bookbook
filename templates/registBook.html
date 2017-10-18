@@ -1,0 +1,139 @@
+{% extends 'layout.html' %} {% block body %}
+
+<script type="text/javascript" src="static/BarcodeReader.js"></script>
+<form class="form-horizontal">
+	<span style="font-size: 30px;"><b>책 등록</span>
+	<br><br><hr color="gray" width="85%" align="left"><br>	
+  <div class="form-group">
+    <label for="inputName" class="col-sm-2 control-label">등록자</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputName" placeholder="Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputISBN" class="col-sm-2 control-label">ISBN</label> 		    	 
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputISBN" placeholder="ISBN" value=''><br>
+		
+		<input id="Take-Picture" type="file" accept="image/*;capture=camera"/>
+	    <button class="btn btn-default" onclick="document.getElementById('Take-Picture').click();">barcode2 scan</button> &nbsp;
+	    <button class="btn btn-default">&nbsp;&nbsp; 직접입력 &nbsp;&nbsp;</button>
+		<canvas width="320" height="240" id="picture" ></canvas>
+		<p id="textbit"></p>
+
+    </div>
+
+
+  </div>
+ 
+  <hr color="#f0f0f5" width="82%" align="left">
+  <div class="form-group">
+    <label for="inputBookName" class="col-sm-2 control-label">도서명</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputBookName" placeholder="Book Name" readonly="true">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAuthor" class="col-sm-2 control-label">저자명</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputAuthor" placeholder="Author" readonly="true">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputDetail" class="col-sm-2 control-label">상세내용</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" id="inputDetail" placeholder="Detail" readonly="true"></textarea>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-info">&nbsp;&nbsp; 등 록 &nbsp;&nbsp;</button>
+    </div>
+  </div>
+</form>
+
+ <script type="text/javascript">
+	var takePicture = document.querySelector("#Take-Picture"),
+	showPicture = document.createElement("img");
+	Result = document.getElementById("#textbit");
+	var canvas =document.getElementById("picture");
+	var ctx = canvas.getContext("2d");
+	JOB.Init();
+	JOB.SetImageCallback(function(result) {
+		if(result.length > 0){
+			var tempArray = [];
+			for(var i = 0; i < result.length; i++) {
+				tempArray.push(result[i].Format+" : "+result[i].Value);
+			}
+			Result.innerHTML=tempArray.join("<br />");
+			echo(tempArray);
+		}else{
+			if(result.length === 0) {
+				Result.innerHTML="Decoding failed.";
+			}
+		}
+	});
+	JOB.PostOrientation = true;
+	JOB.OrientationCallback = function(result) {
+		canvas.width = result.width;
+		canvas.height = result.height;
+		var data = ctx.getImageData(0,0,canvas.width,canvas.height);
+		for(var i = 0; i < data.data.length; i++) {
+			data.data[i] = result.data[i];
+		}
+		ctx.putImageData(data,0,0);
+	};
+	JOB.SwitchLocalizationFeedback(true);
+	JOB.SetLocalizationCallback(function(result) {
+		ctx.beginPath();
+		ctx.lineWIdth = "2";
+		ctx.strokeStyle="red";
+		for(var i = 0; i < result.length; i++) {
+			ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height); 
+		}
+		ctx.stroke();
+	});
+	if(takePicture && showPicture) {
+		takePicture.onchange = function (event) {
+			var files = event.target.files;
+			if (files && files.length > 0) {
+				file = files[0];
+				try {
+					var URL = window.URL || window.webkitURL;
+					showPicture.onload = function(event) {
+						//Result.innerHTML="";
+						JOB.DecodeImage(showPicture);
+						URL.revokeObjectURL(showPicture.src);
+					};
+					showPicture.src = URL.createObjectURL(file);
+				}
+				catch (e) {
+					try {
+						var fileReader = new FileReader();
+						fileReader.onload = function (event) {
+							showPicture.onload = function(event) {
+								Result.innerHTML="";
+								JOB.DecodeImage(showPicture);
+							};
+							showPicture.src = event.target.result;
+						};
+						fileReader.readAsDataURL(file);
+					}
+					catch (e) {
+						Result.innerHTML = "Neither createObjectURL or FileReader are supported";
+					}
+				}
+			}
+		};
+	}
+</script>
+
+
+{% endblock %}
