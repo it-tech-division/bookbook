@@ -36,6 +36,10 @@ def scan():
 def print_holder():
     return render_template('holder.js')
 
+@app.route('/regist')
+def regist_book():
+    return render_template('registBook.html')
+	
 #@app.route('/search/<string:query>')
 @app.route('/search', methods=['POST','GET'])
 def search():
