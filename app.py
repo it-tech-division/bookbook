@@ -30,9 +30,9 @@ def book(id):
 def scan():
 	return render_template('scan.html')
 
-@app.route('/holder')
-def print_holder():
-    return render_template('holder.js')
+@app.route('/scroll')
+def scroll():
+    return render_template('scroll.html')
 
 #@app.route('/search/<string:query>')
 @app.route('/search', methods=['POST','GET'])
