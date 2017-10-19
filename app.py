@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, jsonify, render_template, request, url_for
 from book import *
 
 app = Flask(__name__)
@@ -27,7 +27,9 @@ def scroll():
 
 @app.route('/regist')
 def regist_book():
-    return render_template('registBook.html')
+	#query = request.form['query'].lower
+	#bookinfo = get_bookinfo(query)
+	return render_template('registBook.html')
 
 @app.route('/search', methods=['POST','GET'])
 def search():
@@ -38,6 +40,12 @@ def search():
 
 	return render_template('home.html', books=book_list)
 
+@app.route('/_get_book')
+def get_book():
+	ISBN = request.args.get('ISBN', 0, type=int)
+	#print (ISBN)
+	bookinfo = get_bookinfo(ISBN)
+	return jsonify(bookinfo)
 
 #@app.route('/books')
 #def books():

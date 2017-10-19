@@ -1,8 +1,9 @@
 {% extends 'layout.html' %} {% block body %}
 
 <script type="text/javascript" src="static/BarcodeReader.js"></script>
+
 <form class="form-horizontal">
-	<span style="font-size: 30px;"><b>책 등록</span>
+	<span style="font-size: 30px;"><b>책 등록</b></span>
 	<br><br><hr color="gray" width="85%" align="left"><br>	
   <div class="form-group">
     <label for="inputName" class="col-sm-2 control-label">등록자</label>
@@ -19,13 +20,12 @@
   <div class="form-group">
     <label for="inputISBN" class="col-sm-2 control-label">ISBN</label> 		    	 
     <div class="col-sm-10">
-      <form class="form-inline my-2 my-lg-0" action="/search" method="post">
-		<canvas width="320" height="240" id="picture" style="display:none"></canvas>
-		<input type="text" class="form-control" id="inputISBN" placeholder="ISBN" value=''><br>
+      	<canvas width="320" height="240" id="picture" style="display:none"></canvas>
+		<input type="text" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN" value=''><br>
 		<button class="btn btn-default" onclick="return barcodescan();" >barcode scan</button> &nbsp;
 		<input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
-		<button class="btn btn-default">&nbsp;&nbsp; 입력 &nbsp;&nbsp;</button>
-	  </form>
+		<button class="btn btn-default" onclick="return SearchBook();">&nbsp;&nbsp; 입력 &nbsp;&nbsp;</button>
+	  
     </div>
 
 
@@ -35,21 +35,23 @@
   <div class="form-group">
     <label for="inputBookName" class="col-sm-2 control-label">도서명</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputBookName" placeholder="Book Name" readonly="true">
+      <input type="text" class="form-control" id="title" name="title" placeholder="Book Name" readonly="true">
     </div>
   </div>
   <div class="form-group">
     <label for="inputAuthor" class="col-sm-2 control-label">저자명</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputAuthor" placeholder="Author" readonly="true">
+      <input type="text" class="form-control" id="author" name="author" placeholder="Author" readonly="true">
     </div>
   </div>
   <div class="form-group">
     <label for="inputDetail" class="col-sm-2 control-label">상세내용</label>
     <div class="col-sm-10">
-      <textarea class="form-control" id="inputDetail" placeholder="Detail" readonly="true"></textarea>
+      <textarea class="form-control" id="description" name="description" placeholder="Detail" readonly="true"></textarea>
     </div>
   </div>
+  <hidden type="text" id="image" name="image" value="">
+  <hidden type="text" id="link" name="link" value="">
   
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
@@ -73,7 +75,7 @@
 			}
 			// Result.value=tempArray;
 			Result.value=tempArray[0].split(':')[1].trim();
-			//SearchBook();
+			SearchBook();
 		}else{
 			if(result.length === 0) {
 				Result.innerHTML="Decoding failed.";
@@ -139,12 +141,25 @@
 		return false;
 	}
 	
-	function SearchBook()
-		{
-			var param = document.getElementById("inputISBN").value;
-			location.href="/regist?ISBN="+param;
+	function SearchBook(){
+		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+		var book_data=[];
+		$.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),}, 
+			function(data) {
+				$.each(data, function(key, val) { 
+					try{
+						document.getElementById(key).value=val; 
+						}
+					catch(err){
+					}
+				}
+				); 						
+			}
+		);
+        return false;
 
-		}
+}
+		
 </script>
 
 
