@@ -43,8 +43,6 @@ def search_book(string, type):
 	sql = 'SELECT * FROM book_info where title like \'%'+string+'%\''
 	cur.execute(sql)
 	rows = cur.fetchall()
-<<<<<<< HEAD
 	return rows
-=======
-	return rows
->>>>>>> fc0edd09a4725568dc25c46baa98a76144dcef9a
+
+
