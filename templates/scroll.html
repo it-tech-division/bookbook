@@ -1,0 +1,83 @@
+<html>
+<head>
+ <style type="text/css">
+  #flickr {
+   height:600px;
+   overflow-x:hidden;
+   width:800px;
+  }
+  .flickr_results, .loading {
+   padding:10px;
+   border-radius:5px;
+   background:#eee;
+   color:#555;
+   margin:10px;
+   font-family:helvetica;
+   font-size:11px;
+   font-weight:bold;
+  }
+  .loading {
+   background:#000;
+   color:white;
+  }
+ </style>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+ <script type="text/javascript">
+
+  var loading = true;
+
+  function loadFlickr() {
+   var url = "http://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key=4ef2fe2affcdd6e13218f5ddd0e2500d&photoset_id=72157619415192530&format=json&jsoncallback=?";
+   $.getJSON(url, function(data) {
+    var photos = data.photoset.photo;
+    $.each(photos, function(i,photo) {
+     var title = photo.title;
+     $("#flickr").append("<div class='flickr_results'>"+title+"</div>");
+    });
+
+    // once we've loaded
+    // kill the loading stuff
+    loading = false;
+    $(".loading").remove();
+
+   });
+  }
+
+  $(function() {
+
+   // load initial photos
+   loadFlickr();
+
+   // scroll event of the main div
+   $("#flickr").scroll(function() {
+
+    // get the max and current scroll
+    var curScroll = $(this)[0].scrollTop;
+    var maxScroll = $(this)[0].scrollHeight - $(this).height();
+
+    // are we at the bottom?
+    if( (curScroll == maxScroll) && loading == false) {
+
+     // when you start, set loading
+     loading = true;
+
+     // add the loading box
+     $("#flickr").append("<div class='loading'>Loading...</div>");
+
+     // scroll to the bottom of the div
+      $(this)[0].scrollTop = $(this)[0].scrollHeight - $(this).height();
+
+     // load more photos
+     loadFlickr();
+    }
+   });
+
+  });
+ </script>
+</head>
+<body>
+ <div id="flickr">
+
+ </div>
+</body>
+</html>

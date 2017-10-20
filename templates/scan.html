@@ -5,16 +5,11 @@
 			<input id="Take-Picture" type="file" accept="image/*;capture=camera" />
 			<p id="textbit"></p>
 		</div>
-<<<<<<< HEAD
 		<script type="text/javascript" src="static/BarcodeReader.js"></script>
-=======
-		<script type="text/javascript" src="{{ url_for('static', filename='job.js') }}"></script>
-		
->>>>>>> 5860b84eb15c2511d6867797dc14e3d19083bee8
 		<script type="text/javascript">
 			var takePicture = document.querySelector("#Take-Picture"),
 			showPicture = document.createElement("img");
-			Result = document.querySelector("#textbit");
+			Result = document.getElementById("textbit");
 			var canvas =document.getElementById("picture");
 			var ctx = canvas.getContext("2d");
 			JOB.Init();
@@ -85,10 +80,4 @@
 				};
 			}
 		</script>
-<<<<<<< HEAD
 
-=======
-	</body>
-</html>
-{% endblock %}
->>>>>>> 5860b84eb15c2511d6867797dc14e3d19083bee8

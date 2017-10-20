@@ -44,3 +44,5 @@ def search_book(string, type):
 	cur.execute(sql)
 	rows = cur.fetchall()
 	return rows
+
+
