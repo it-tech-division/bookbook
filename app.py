@@ -26,7 +26,7 @@ def scroll():
     return render_template('scroll.html')
 
 @app.route('/regist')
-def regist_book():
+def regist():
 	#query = request.form['query'].lower
 	#bookinfo = get_bookinfo(query)
 	return render_template('registBook.html')
@@ -46,6 +46,20 @@ def get_book():
 	#print (ISBN)
 	bookinfo = get_bookinfo(ISBN)
 	return jsonify(bookinfo)
+	
+@app.route('/regist_book', methods=['POST','GET'])
+def regist_book():
+	query=request.form
+	print(query)
+	insert_book(query)
+	book_list = search_book("%","title")
+
+	# modify image link to improve image quality.
+	for book in book_list:
+		book['image'] = book['image'].split('?')[0]
+
+	return render_template('home.html', books=book_list)
+	
 
 #@app.route('/books')
 #def books():
@@ -58,4 +72,4 @@ def get_book():
 
 
 if __name__ == '__main__':
-	app.run(debug=True, host='0.0.0.0', port=8000)
+	app.run(debug=True, host='0.0.0.0', port=80)
