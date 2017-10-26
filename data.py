@@ -49,5 +49,4 @@ def Books():
             'created_date' : '09-27-2017'
         }
     ]
-
     return books
