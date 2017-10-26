@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, render_template, request, url_for
+from flask.ext.runner import Runner
 from book import *
 
 app = Flask(__name__)
+runner = Runner(app)
 
 @app.route('/')
 def index():
@@ -72,4 +74,5 @@ def regist_book():
 
 
 if __name__ == '__main__':
-	app.run(debug=True, host='0.0.0.0', port=80)
+    runner.run()
+    #	app.run(debug=True)
