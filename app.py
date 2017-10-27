@@ -11,6 +11,7 @@ def index():
 
 	# modify image link to improve image quality.
 	for book in book_list:
+		print(book['image'])	
 		book['image'] = book['image'].split('?')[0]
 
 	return render_template('home.html', books=book_list)
@@ -59,7 +60,6 @@ def regist_book():
 	# modify image link to improve image quality.
 	for book in book_list:
 		book['image'] = book['image'].split('?')[0]
-
 	return render_template('home.html', books=book_list)
 	
 
