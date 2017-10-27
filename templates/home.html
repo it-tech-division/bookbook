@@ -23,7 +23,7 @@
             <div class="card-text">
               <small>{{book.author}} ({{book.created_date}})</small>
 			  {% include 'modal.html' %} 
-              <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#lendModal" >대여하기</button>
+              <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >대여하기</button>
             </div>
           </div>
         </div>
