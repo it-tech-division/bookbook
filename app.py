@@ -28,6 +28,10 @@ def regist():
 	#bookinfo = get_bookinfo(query)
 	return render_template('registBook.html')
 
+@app.route('/returns')
+def returns():
+	return render_template('returnBook.html')
+
 @app.route('/search', methods=['POST','GET'])
 def search():
 	query = request.form['query'].lower()
@@ -68,6 +72,11 @@ def approve_book():
 	query=request.args
 	approve_booklog(query)
 	return redirect(url_for('index'))
+
+@app.route('/return_book', methods=['GET'])		
+def return_book():
+    #TODO : 여기에 코드 입력하세요. 
+    pass
 	
 #@app.route('/books')
 #def books():
