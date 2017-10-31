@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, url_for
+from flask import Flask, jsonify, render_template, request, url_for, redirect,flash
 from flask.ext.runner import Runner
 from book import *
 
@@ -10,8 +10,6 @@ def index():
 	book_list = search_book("%","title")
 
 	# modify image link to improve image quality.
-	for book in book_list:
-		book['image'] = book['image'].split('?')[0]
 
 	return render_template('home.html', books=book_list)
 
@@ -37,9 +35,6 @@ def regist():
 def search():
 	query = request.form['query'].lower()
 	book_list = search_book(query, "title")
-	for book in book_list:
-		book['image'] = book['image'].split('?')[0]
-
 	return render_template('home.html', books=book_list)
 
 @app.route('/_get_book')
@@ -55,13 +50,22 @@ def regist_book():
 	print(query)
 	insert_book(query)
 	book_list = search_book("%","title")
-
-	# modify image link to improve image quality.
-	for book in book_list:
-		book['image'] = book['image'].split('?')[0]
 	return render_template('home.html', books=book_list)
-	
 
+@app.route('/borrow_book', methods=['POST','GET'])
+def borrow_book():
+	query=request.form
+	print(query)
+	borrow_booklog(query)
+	#flash('You were successfully logged in')
+	return redirect(url_for('index'))
+	
+@app.route('/approve_book', methods=['GET'])		
+def approve_book():
+	query=request.args
+	approve_booklog(query)
+	return redirect(url_for('index'))
+	
 #@app.route('/books')
 #def books():
 #    return render_template('books.html', books=book_list)
