@@ -13,6 +13,7 @@
 <div class="album text-muted">
   <div class="container">
     <div class="row">
+    {% if books %}  
       {% for book in books %}
 
       <div class="col-sm-12">
@@ -53,6 +54,24 @@
 
 
       {% endfor %}
+
+	{% else %}
+		<div class="row text-center">
+				<!--Image-->
+				<img src="static/book404.png" width=100%>
+			</div>
+
+			<!--Excerpt-->
+			<div class="col text-center">
+                <h1 class="jumbotron-heading">애궁...</h1>
+                <p class="lead text-muted">찾으시는 책이 없네요. 책을 등록해 보는 건 어떠세요?</p>
+            <p>
+              <a href="/regist" class="btn btn-primary">책 등록하기</a>
+              <a href="/" class="btn btn-secondary">홈으로 가기</a>
+            </p>
+			</div>
+		</div>
+	{% endif %}
 
     </div>
   </div>
