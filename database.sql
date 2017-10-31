@@ -19,11 +19,12 @@ create table book_info (
 	);
 
 create table book_log (
-	book_no INT(11) unsigned NOT NULL,
-	book_lender VARCHAR(50),
-	book_lender_email varchar(50),
-	book_lenddate DATE NOT NULL,
-	book_returndate DATE
+	no INT(11) unsigned NOT NULL,
+	borrower VARCHAR(50),
+	borrower_email varchar(50),
+	borrow_date DATE NOT NULL,
+	return_date DATE,
+	message varchar(500)
 	);
 	
 alter table book_info convert to character set utf8;

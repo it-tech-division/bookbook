@@ -1,6 +1,9 @@
 import urllib.request
 import json, sys
 import pymysql
+import re
+import smtplib
+from email.mime.text import MIMEText
 
 CLIENT_ID = "ENRbt0kUz4t8IFpMUrXP"
 CLIENT_SECRET = "rH72o8liHs"
@@ -25,15 +28,23 @@ def get_bookinfo(query):
 	if response.getcode() == 200:
 		json_result = response.read().decode('utf-8')
 		result = json.loads(json_result)
-		for i in result['items']:
-			#print (i['title'])
-			return i
+		
+		for book in result['items']:
+			# modify image link to improve image quality.
+			#print(book)
+			book['image'] = book['image'].split('?')[0]
+			book['title'] = re.sub('<[^>]*>', '', book['title'])
+			book['description'] = re.sub('<[^>]*>', '', book['description'])
+			book['title'] = book['title'][:99]
+			book['isbn'] = book['isbn'].split()[1]
+			return book
 
 def insert_book(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	sql = "INSERT INTO book_info(title,isbn,author,image,link,register,register_email,created_date) values(%s,%s,%s,%s,%s,%s,%s,CURDATE())"
-	cur.execute(sql,(query['title'],query['inputISBN'],query['author'],query['image'],query['link'],query['name'],query['email']))
+	#print (query['title'],query['inputISBN'],query['author'],query['image'],query['link'],query['name'],query['email'])
+	cur.execute(sql,(query['title'],query['inputISBN'],query['author'],query['image'].split('?')[0],query['link'],query['name'],query['email']))
 	conn.commit()
 	conn.close()
 
@@ -45,5 +56,53 @@ def search_book(string, type):
 	rows = cur.fetchall()
 	conn.close()
 	return rows
+	
+def borrow_booklog(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#책 정보를 book_log 테이블에 입력
+	sql = "INSERT INTO book_log(no,borrower,borrower_email,message,borrow_date) values(%s,%s,%s,%s,CURDATE())"
+	cur.execute(sql,(query['book_no'],query['borrower_name'],query['borrower_email'],query['message']))
+	conn.commit()
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2 
+	sql = "UPDATE book_info set avalability=1 where book_no=%s"
+	#send_mail
+	cur.execute(sql,(query['book_no']))
+	conn.commit()
+	
+	sql = 'SELECT register_email,registe,book_no FROM book_info where book_no=%s'	
+	cur.execute(sql,(query['book_no']))
+	rows=cur.fetchall()
+	send_mail("borrow", rows)
+	conn.close()
 
+def approve_booklog(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2
+	sql = "UPDATE book_info set avalability=2 where book_no=%s"
+	#send_mail
+	cur.execute(sql,(query['book_no']))
+	conn.commit()
+	conn.close()
+	
+def send_mail(status, data):
+	import smtplib
+	from email.mime.text import MIMEText
+	smtp = smtplib.SMTP('localhost')
+	smtp.ehlo()      # say Hello
+	#smtp.starttls()  # TLS 사용시 필요
+	#smtp.login('yh.kim@kia.co.kr', 'dydrkf2@')
+	if status=="borrow":
+		msg = MIMEText('본문 테스트 메시지')
+		msg['Subject'] = '[BookBook]책 대여 요청'
+		
+	if status=="return":
+		msg = MIMEText('본문 테스트 메시지')
+		msg['Subject'] = '[BookBook]책 반납 요청'
+	
+	msg['To'] = 'yh.kim@kia.com'
+	smtp.sendmail('bookbook@kia.com', 'yh.kim@kia.com', msg.as_string())
+	 
+	smtp.quit()
 
