@@ -89,6 +89,10 @@ def approve_booklog(query):
 def return_booklog(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
+	sql = "UPDATE book_log set return_date=CURDATE() where book_no=%s and borrower=%s, borrower_email=%s, borower_date=%s"
+	cur.execute(sql,(query['book_no'],query['borrower_name'],query['borrower_email'],query['return_date']))
+	conn.commit()
+	
 	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2
 	sql = "UPDATE book_info set avalability=0 where book_no=%s"
 	#send_mail
@@ -103,7 +107,7 @@ def send_mail(status, data):
 	smtp = smtplib.SMTP('localhost')
 	smtp.ehlo()      # say Hello
 	#smtp.starttls()  # TLS 사용시 필요
-	print("123123")
+	
 	if status=="borrow":
 		msg = MIMEText('본문 테스트 메시지')
 		msg['Subject'] = '[BookBook]책 대여 요청'

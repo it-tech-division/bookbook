@@ -8,10 +8,7 @@ runner = Runner(app)
 @app.route('/')
 def index():
 	book_list = search_book("%","title")
-
-	# modify image link to improve image quality.
-
-	return render_template('home.html', books=book_list, messages=messages)
+	return render_template('home.html', books=book_list)
 
 @app.route('/about')
 def about():
@@ -35,7 +32,11 @@ def regist():
 def search():
 	query = request.form['query'].lower()
 	book_list = search_book(query, "title")
-	return render_template('home.html', books=book_list)
+	if book_list:
+		messages=""
+	else:
+		messages="검색된 책이 없습니다."
+	return render_template('home.html', books=book_list,alert_messages=messages)
 
 @app.route('/_get_book')
 def get_book():
@@ -47,19 +48,20 @@ def get_book():
 @app.route('/regist_book', methods=['POST','GET'])
 def regist_book():
 	query=request.form
-	print(query)
+	#print(query)
 	insert_book(query)
-	messages="12312312312312312313213123"
-	return redirect(url_for('index',messages=messages))
+	messages=query['title']+" 책 등록 성공"
+	book_list = search_book("%","title")
+	return render_template('home.html', books=book_list,alert_messages=messages)
 
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
 	query=request.form
 	#print(query)
-	borrow_booklog(query):
-	#messages="123123123123"
-	#flash('You were successfully logged in')
-	return redirect(url_for('index',messages=messages))
+	borrow_booklog(query)
+	messages=query['title']+" 대여 신청 완료"
+	book_list = search_book("%","title")
+	return render_template('home.html', books=book_list,alert_messages=messages)
 	
 @app.route('/approve_book', methods=['GET'])		
 def approve_book():
