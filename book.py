@@ -92,7 +92,7 @@ def send_mail(status, data):
 	smtp = smtplib.SMTP('localhost')
 	smtp.ehlo()      # say Hello
 	#smtp.starttls()  # TLS 사용시 필요
-	#smtp.login('yh.kim@kia.co.kr', 'dydrkf2@')
+	print("123123")
 	if status=="borrow":
 		msg = MIMEText('본문 테스트 메시지')
 		msg['Subject'] = '[BookBook]책 대여 요청'
