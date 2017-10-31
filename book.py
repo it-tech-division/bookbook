@@ -69,10 +69,10 @@ def borrow_booklog(query):
 	#send_mail
 	cur.execute(sql,(query['book_no']))
 	conn.commit()
-	
-	sql = 'SELECT register_email,registe,book_no FROM book_info where book_no=%s'	
+	sql = 'SELECT register_email,register,book_no FROM book_info where book_no=%s'	
 	cur.execute(sql,(query['book_no']))
 	rows=cur.fetchall()
+	print(rows)
 	send_mail("borrow", rows)
 	conn.close()
 
@@ -85,6 +85,17 @@ def approve_booklog(query):
 	cur.execute(sql,(query['book_no']))
 	conn.commit()
 	conn.close()
+
+def return_booklog(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2
+	sql = "UPDATE book_info set avalability=0 where book_no=%s"
+	#send_mail
+	cur.execute(sql,(query['book_no']))
+	conn.commit()
+	conn.close()
+
 	
 def send_mail(status, data):
 	import smtplib

@@ -11,7 +11,7 @@ def index():
 
 	# modify image link to improve image quality.
 
-	return render_template('home.html', books=book_list)
+	return render_template('home.html', books=book_list, messages=messages)
 
 @app.route('/about')
 def about():
@@ -49,16 +49,17 @@ def regist_book():
 	query=request.form
 	print(query)
 	insert_book(query)
-	book_list = search_book("%","title")
-	return render_template('home.html', books=book_list)
+	messages="12312312312312312313213123"
+	return redirect(url_for('index',messages=messages))
 
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
 	query=request.form
-	print(query)
-	borrow_booklog(query)
+	#print(query)
+	borrow_booklog(query):
+	#messages="123123123123"
 	#flash('You were successfully logged in')
-	return redirect(url_for('index'))
+	return redirect(url_for('index',messages=messages))
 	
 @app.route('/approve_book', methods=['GET'])		
 def approve_book():

@@ -131,6 +131,14 @@
 
 </head>
 <body>
+ {% if alert_message %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		123123123
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+ {% endif %}
   {% include 'includes/_navbar.html' %}
   <div class="container">
 	
