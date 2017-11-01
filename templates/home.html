@@ -25,7 +25,7 @@
             <div class="col-8">
               <p>
               {{book.title}}<p>
-              <small>{{book.author}}<br>{{book.created_date}}</small>
+              <small>{{book.register}}<br>{{book.created_date}}</small>
               <div class="col">
 			    {% include 'modal.html' %} 
                 <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >대여하기</button>
