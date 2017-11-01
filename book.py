@@ -86,11 +86,22 @@ def approve_booklog(query):
 	conn.commit()
 	conn.close()
 
+def return_booksearch(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	sql = "SELECT * FROM book_info JOIN book_log ON book_info.book_no=book_log.no where borrower=%s and borrower_email=%s"
+	print(sql)
+	cur.execute(sql,(query['name'],query['email']))
+	rows=cur.fetchall()
+	conn.close
+	print(rows)
+	return rows	
+
 def return_booklog(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	sql = "UPDATE book_log set return_date=CURDATE() where book_no=%s and borrower=%s, borrower_email=%s, borower_date=%s"
-	cur.execute(sql,(query['book_no'],query['borrower_name'],query['borrower_email'],query['return_date']))
+	cur.execute(sql,(query['book_no'],query['name'],query['email'],query['return_date']))
 	conn.commit()
 	
 	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2

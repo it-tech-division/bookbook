@@ -73,10 +73,12 @@ def approve_book():
 	approve_booklog(query)
 	return redirect(url_for('index'))
 
-@app.route('/return_book', methods=['GET'])		
+@app.route('/return_book', methods=['POST','GET'])	
 def return_book():
-    #TODO : 여기에 코드 입력하세요. 
-    pass
+	query = request.form
+	print(query)
+	borrow_bookinfo=return_booksearch(query)
+	return render_template("returnBook.html",books=borrow_bookinfo)	
 	
 #@app.route('/books')
 #def books():
@@ -87,7 +89,7 @@ def return_book():
 #    return render_template('book.html', id=id)
 
 
-
+	
 if __name__ == '__main__':
     runner.run()
     #	app.run(debug=True)
