@@ -79,16 +79,12 @@ def return_book():
 	print(query)
 	borrow_bookinfo=return_booksearch(query)
 	return render_template("returnBook.html",books=borrow_bookinfo)	
+
+# test
+@app.route('/mailform')
+def mailform():
+    return render_template('mailForm.html')
 	
-#@app.route('/books')
-#def books():
-#    return render_template('books.html', books=book_list)
-
-#@app.route('/book/<string:id>')
-#def book(id):
-#    return render_template('book.html', id=id)
-
-
 	
 if __name__ == '__main__':
     runner.run()
