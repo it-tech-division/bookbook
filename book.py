@@ -72,7 +72,7 @@ def borrow_booklog(query):
 	sql = 'SELECT register_email,register,book_no FROM book_info where book_no=%s'	
 	cur.execute(sql,(query['book_no']))
 	rows=cur.fetchall()
-	print(rows)
+	#print(rows)
 	send_mail("borrow", rows)
 	conn.close()
 
@@ -90,11 +90,11 @@ def return_booksearch(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	sql = "SELECT * FROM book_info JOIN book_log ON book_info.book_no=book_log.no where borrower=%s and borrower_email=%s"
-	print(sql)
+	#print(sql)
 	cur.execute(sql,(query['name'],query['email']))
 	rows=cur.fetchall()
 	conn.close
-	print(rows)
+	#print(rows)
 	return rows	
 
 def return_booklog(query):

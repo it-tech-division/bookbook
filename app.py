@@ -76,7 +76,7 @@ def approve_book():
 @app.route('/return_book', methods=['POST','GET'])	
 def return_book():
 	query = request.form
-	print(query)
+	#print(query)
 	borrow_bookinfo=return_booksearch(query)
 	return render_template("returnBook.html",books=borrow_bookinfo)	
 	
