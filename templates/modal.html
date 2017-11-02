@@ -1,29 +1,32 @@
-<div class="modal fade" id="{{book.book_no}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display:none">	
+<div class="modal fade" id="{{book.book_no}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display:none">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">       
-        <h4 class="modal-title" id="exampleModalLabel">책 대여</h4>
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">대여 신청하기</h4>
 		 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
-	  
+
 	  {% block body %}
       <form class="form-horizontal" action="/borrow_book" method="post">
 	  <div class="modal-body">
-        
-          <div class="form-group">
+		  <p>
+          <div class="form-group col-lg-6">
             <label for="recipient-name" class="control-label">도서명:</label>
             <input type="text" class="form-control" id="recipient-title" name="title" placeholder="{{book.title}}" readonly="true">
           </div>
-		  <div class="form-group">
-            <label for="recipient-name" class="control-label">대여자:</label>
+
+		  <div class="form-group col-lg-6">
+            <label for="recipient-name" class="control-label">신청자 이름 :</label>
             <input type="text" class="form-control" id="recipient-name" name="borrower_name">
           </div>
-		  <div class="form-group">
-            <label for="recipient-name" class="control-label">E-mail:</label>
+		  <p><p>
+		  <div class="form-group col-lg-6">
+            <label for="recipient-name" class="control-label">이메일 :</label>
             <input type="email" class="form-control" id="recipient-email" name="borrower_email" placeholder="ex)abcd@hyundai.com">
           </div>
-          <div class="form-group">
-            <label for="message-text" class="control-label">Message:</label>
+		  <p>
+          <div class="form-group col-lg-6">
+            <label for="message-text" class="control-label">남기실 말씀 (선택사항):</label>
             <textarea class="form-control" id="message-text" name="message"></textarea>
           </div>
 		  <input type="hidden" id="book_no" name="book_no" value="{{book.book_no}}">
@@ -32,8 +35,7 @@
 
 	 {% endblock %}
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">취소하기</button>
-        <button type="submit" class="btn btn-primary">대여하기</button>
+        <button type="submit" class="btn btn-primary btn-block">이 책을 대여해 주세요.</button>
       </div>
 	  </form>
     </div>

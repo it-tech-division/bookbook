@@ -1,11 +1,17 @@
 {% extends 'layout.html' %} {% block body %}
 <section class="jumbotron text-center">
   <div class="container">
-    <h1 class="jumbotron-heading">부끄부끄</h1>
-    <p class="lead text-muted">책장에서 잠자던 책들을 나누어 봅시다.</p>
+      <h1 class="jumbotron-heading">부끄부끄</h1>
+    <p class="lead text-muted">
+    여러분의 책장에서 잠자고 있는 책이<br>
+    누군가에겐 또 다른 기쁨이 될 수 있어요.<br>
+    서로 나누며 성장하는 기쁨을 누려보세요.<br>
+    부끄부끄는 바로 그런 서비스입니다. <br>
+    지금 한번 해보실래요?
+    </p>
     <p>
-      <a href="/regist" class="btn btn-primary">책 등록하기</a>
-      <a href="/returns" class="btn btn-secondary">책 반납하기</a>
+      <a href="/regist" class="btn btn-primary">나누는 기쁨</a>
+      <a href="/returns" class="btn btn-secondary">돌려주는 기쁨</a>
     </p>
   </div>
 </section>
@@ -13,7 +19,7 @@
 <div class="album text-muted">
   <div class="container">
     <div class="row">
-    {% if books %}  
+    {% if books %}
       {% for book in books %}
 
       <div class="col-sm-12">
@@ -27,12 +33,14 @@
               {{book.title}}<p>
               <small>{{book.register}}<br>{{book.created_date}}</small>
               <div class="col">
-			    {% include 'modal.html' %} 
+			    {% include 'modal.html' %}
                 {% if book.avalability == '1' %}
-                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여대기</button>
+                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">예약 중</button>
                 {% elif book.avalability == '2' %}
-                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여중</button>
-				{% else %}
+
+                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여 중</button>
+                {% else %}
+
                   <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}">대여하기</button>
                 {% endif %}
               </div>
@@ -50,7 +58,7 @@
             <h4 class="card-title">{{book.title}}</h4>
             <div class="card-text">
               <small>{{book.author}} ({{book.created_date}})</small>
-			  {% include 'modal.html' %} 
+			  {% include 'modal.html' %}
               <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >대여하기</button>
             </div>
           </div>

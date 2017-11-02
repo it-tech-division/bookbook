@@ -1,10 +1,11 @@
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark justify-content-between">
   <a class="navbar-brand" href="/">
       <img src="/static/logo.png" width="25" height="25" class="d-inline-block align-top" alt="">
-      &nbsp;우리들의 책 공유 서비스
+      &nbsp;우리들의 책 공유 서비스 (Beta)
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <!-- <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span> -->
+    <i class="fa fa-search" aria-hidden="true"></i>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -24,8 +25,8 @@
     </ul>
       //-->
     <form class="form-inline my-2 my-lg-0" action="/search" method="post">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="text" placeholder="찾고 싶은 책 제목을 넣어보세요." aria-label="Search" name="query">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검 색</button>
     </form>
   </div>
 </nav>

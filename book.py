@@ -97,7 +97,7 @@ def return_booksearch(query):
 	#print(rows)
 	return rows	
 
-def return_booklog(query):
+def request_book_return(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2 반납대기:avalability=3
@@ -109,6 +109,18 @@ def return_booklog(query):
 	conn.commit()
 	conn.close()
 
+def confirm_book_return(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2 반납대기:avalability=3
+	sql = "UPDATE book_info set avalability=0 where book_no=%s"
+	cur.execute(sql,(query['book_no']))
+	conn.commit
+	sql = "UPDATE book_log set return_date=CURDATE() where no=%s and borrower=%s and borrower_email=%s and borrow_date=%s"
+	print(sql%(query['book_no'],query['name'],query['email'],query['borrow_date']))
+	cur.execute(sql,(query['book_no'],query['name'],query['email'],query['borrow_date']))
+	conn.commit()
+	conn.close()
 	
 def send_mail(status, data):
 	import smtplib
