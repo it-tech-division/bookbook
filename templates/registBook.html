@@ -2,231 +2,236 @@
 
 <script type="text/javascript" src="static/BarcodeReader.js"></script>
 
-<form class="form-horizontal" action="/regist_book" method="post" id="needs-validation" novalidate>
+<section class="jumbotron text-center">
+  <div class="container">
+      <h1 class="jumbotron-heading">책을 공유해 주세요.</h1>
+    <p class="lead text-muted">
+	나눔을 실천하는 방법은 간단합니다.<br>
+	아래 이름과 이메일을 적어주시고,<br>
+	책 뒷면에 있는 ISBN만 입력해 주시면 끝!<br>
+	너무 쉽죠?<br>
+	입력이 귀찮으시면, 자동스캔 기능을 사용해 보세요.
+    </p>
+  </div>
+</section>
 
-      <p class="h2 text-center mb-4">책 등록하기</p>
+<form class="container" action="/regist_book" method="post" id="needs-validation" novalidate>
+	<div class="md-form">
+		<div class="col-lg-6">
+			<input type="text" id="name" name="name" class="form-control" placeholder="등록자 이름을 입력하세요." required>
+			<div class="invalid-feedback">
+			이름을 빼먹으시면 안되겠죠?
+			</div>
+		</div>
+	</div>
 
-      <div class="md-form">
-        <i class="fa fa-star prefix grey-text"></i>
-        <input type="text" id="name" name="name" class="form-control" placeholder="등록자 이름을 입력하세요." required>
-        <div class="invalid-feedback">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;등록자 이름을 입력하세요.  
-        </div>
-      </div>
+	<div class="md-form">
+		<div class="col-lg-6">
+			<input type="text" id="email" name="email" class="form-control" placeholder="등록자 이메일을 입력하세요." required>
+			<div class="invalid-feedback">
+			자동 알림을 위해 이메일도 꼭 입력해 주세요.
+			</div>
+		</div>
+	</div>
 
-      <div class="md-form">
-        <i class="fa fa-envelope prefix grey-text"></i>
-        <input type="text" id="email" name="email" class="form-control" placeholder="등록자 이메일을 입력하세요." required>
-        <div class="invalid-feedback">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;등록자 이메일을 입력하세요.
-        </div>
-      </div>
-
-      <div class="md-form">
-        <i class="fa fa-book prefix grey-text"></i>
-        <input type="text" id="inputISBN" name="inputISBN" class="form-control" placeholder="등록하려는 책의 ISBN을 입력하세요." required>
-        <div class="invalid-feedback">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISBN 값을 입력해 주세요.
-        </div>
-      </div>
-
-      <!--
-      <div class="text-center">
-        <button class="btn btn-default">Login</button>
-      </div>
-      //-->
-
-      <div class="text-center">
+	<div class="md-form">
+		<div class="col-lg-6">
+			<div class="input-group">
+				<input type="text" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 직접 입력하거나, 스캔해 주세요." aria-label="Search for..." required>
+				<span class="input-group-btn">
+		<button class="btn btn-default btn-sm" onclick="return SearchBook();">입력</button>
+        <button class="btn btn-secondary btn-sm" type="button" onclick="return barcodescan();">자동스캔</button>
 		<canvas width="320" height="240" id="picture" style="display:none"></canvas>
-        <button class="btn btn-default" onclick="return barcodescan();">바코드 스캔</button> &nbsp;
-        <input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
-        <button class="btn btn-default" onclick="return SearchBook();">직접 입력</button>
-      </div>
-
-
-
-
-
-
-      <!--
-	<span style="font-size: 30px;"><b>책 등록</b></span>
-	<br><br><hr color="gray" width="85%" align="left"><br>	
-  <div class="form-group">
-    <label for="inputName" class="col-sm-2 control-label">등록자</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="name" name="name"  placeholder="Name">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputISBN" class="col-sm-2 control-label">ISBN</label> 		    	 
-    <div class="col-sm-10">
-      	<canvas width="320" height="240" id="picture" style="display:none"></canvas>
-		<input type="text" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN" value=''><br>
-		<button class="btn btn-default" onclick="return barcodescan();" >바코드스캔</button> &nbsp;
 		<input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
-		<button class="btn btn-default" onclick="return SearchBook();">&nbsp;&nbsp; 직접입력 &nbsp;&nbsp;</button>
-	  
-    </div>
+      </span>
+			</div>
+			<div class="invalid-feedback">
+				책의 공유 정보인 ISBN 값은 필수입니다.
+			</div>
+		</div>
+		<!-- <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button> -->
+	</div>
 
+	<hr color="#f0f0f5" width="100%" align="center">
 
-  </div>
-  //-->
- 
-  <hr color="#f0f0f5" width="100%" align="center">
-  <div class="form-group">
-    <label for="inputBookName" class="col-sm-2 control-label">도서명</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="title" name="title" placeholder="Book Name" readonly="true">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputAuthor" class="col-sm-2 contol-lagel">저자</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="author" name="author" placeholder="Author" readonly="true">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputDetail" class="col-sm-2 control-label">상세내용</label>
-    <div class="col-sm-10">
-      <textarea class="form-control" id="description" name="description" placeholder="Detail" readonly rows="5"></textarea>
-    </div>
-  </div>
-  <input type="hidden" id="image" name="image" value="">
-  <input type="hidden" id="link" name="link" value="">
-  
-  <div class="form-group">
-    <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary btn-lg btn-block">등록하기</button>
-    </div>
-  </div>
+	<div class="album text-muted">
+	  <div class="container">
+	    <div class="row">
+	      <div class="col-sm-12">
+	        <div class="well well-sm">
+	          <div class="row">
+	            <div class="col-4">
+	              <a href="#" id="link" name="link"><img src="#" id="image" name="image" alt="book-cover" class="rounded img-responsive" /></a>
+	            </div>
+	            <div class="col-8">
+	              <p><input type="text" class="form-control" id="title" name="title" placeholder="책 제목" readonly="true">
+	              <p><input type="text" class="form-control" id="author" name="author" placeholder="저자" readonly="true">
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="form-group">
+		<label for="inputDetail" class="col-sm-2 control-label">상세 내용</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" id="description" name="description" placeholder="Detail" rows="5"></textarea>
+		</div>
+	</div>
+	<input type="hidden" id="image" name="image" value="">
+	<input type="hidden" id="link" name="link" value="">
+
+    <hr />
+	<div class="form-group">
+		<div class="col-sm-10">
+			<button type="submit" class="btn btn-primary btn-lg btn-block">이 책을 공유하겠습니다.</button>
+		</div>
+	</div>
 </form>
 
- <script type="text/javascript">
-	var takePicture = document.querySelector("#Take-Picture"),
-	showPicture = document.createElement("img");
-	Result = document.getElementById("inputISBN");
-	var canvas =document.getElementById("picture");
-	var ctx = canvas.getContext("2d");
-	JOB.Init();
-	JOB.SetImageCallback(function(result) {
-		if(result.length > 0){
-			var tempArray = [];
-			for(var i = 0; i < result.length; i++) {
-				tempArray.push(result[i].Format+" : "+result[i].Value);
-			}
-			// Result.value=tempArray;
-			Result.value=tempArray[0].split(':')[1].trim();
-			SearchBook();
-		}else{
-			if(result.length === 0) {
-				Result.innerHTML="Decoding failed.";
-			}
-		}
-	});
-	JOB.PostOrientation = true;
-	JOB.OrientationCallback = function(result) {
-		canvas.width = result.width;
-		canvas.height = result.height;
-		var data = ctx.getImageData(0,0,canvas.width,canvas.height);
-		for(var i = 0; i < data.data.length; i++) {
-			data.data[i] = result.data[i];
-		}
-		ctx.putImageData(data,0,0);
-	};
-	JOB.SwitchLocalizationFeedback(true);
-	JOB.SetLocalizationCallback(function(result) {
-		ctx.beginPath();
-		ctx.lineWIdth = "2";
-		ctx.strokeStyle="red";
-		for(var i = 0; i < result.length; i++) {
-			ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height); 
-		}
-		ctx.stroke();
-	});
-	if(takePicture && showPicture) {
-		takePicture.onchange = function (event) {
-			var files = event.target.files;
-			if (files && files.length > 0) {
-				file = files[0];
-				try {
-					var URL = window.URL || window.webkitURL;
-					showPicture.onload = function(event) {
-						Result.innerHTML="";
-						JOB.DecodeImage(showPicture);
-						URL.revokeObjectURL(showPicture.src);
-					};
-					showPicture.src = URL.createObjectURL(file);
-				}
-				catch (e) {
-					try {
-						var fileReader = new FileReader();
-						fileReader.onload = function (event) {
-							showPicture.onload = function(event) {
-								Result.innerHTML="";
-								JOB.DecodeImage(showPicture);
-							};
-							showPicture.src = event.target.result;
-						};
-						fileReader.readAsDataURL(file);
-					}
-					catch (e) {
-						Result.innerHTML = "Neither createObjectURL or FileReader are supported";
-					}
-				}
-			}
-		};
-	}
-	
-	function barcodescan(){
-		document.getElementById('Take-Picture').click();
-		return false;
-	}
-	
-	function SearchBook(){
-		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-		var book_data=[];
-		$.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),}, 
-			function(data) {
-				$.each(data, function(key, val) { 
-					try{
-						document.getElementById(key).value=val; 
-						}
-					catch(err){
-					}
-				}
-				); 						
-			}
-		);
-        return false;
+
+<script type="text/javascript">
+   var takePicture = document.querySelector("#Take-Picture"),
+   showPicture = document.createElement("img");
+   Result = document.getElementById("inputISBN");
+   var canvas =document.getElementById("picture");
+   var ctx = canvas.getContext("2d");
+   JOB.Init();
+   JOB.SetImageCallback(function(result) {
+	   if(result.length > 0){
+		   var tempArray = [];
+		   for(var i = 0; i < result.length; i++) {
+			   tempArray.push(result[i].Format+" : "+result[i].Value);
+		   }
+		   // Result.value=tempArray;
+		   Result.value=tempArray[0].split(':')[1].trim();
+		   SearchBook();
+	   }else{
+		   if(result.length === 0) {
+			   Result.innerHTML="Decoding failed.";
+		   }
+	   }
+   });
+   JOB.PostOrientation = true;
+   JOB.OrientationCallback = function(result) {
+	   canvas.width = result.width;
+	   canvas.height = result.height;
+	   var data = ctx.getImageData(0,0,canvas.width,canvas.height);
+	   for(var i = 0; i < data.data.length; i++) {
+		   data.data[i] = result.data[i];
+	   }
+	   ctx.putImageData(data,0,0);
+   };
+   JOB.SwitchLocalizationFeedback(true);
+   JOB.SetLocalizationCallback(function(result) {
+	   ctx.beginPath();
+	   ctx.lineWIdth = "2";
+	   ctx.strokeStyle="red";
+	   for(var i = 0; i < result.length; i++) {
+		   ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height);
+	   }
+	   ctx.stroke();
+   });
+   if(takePicture && showPicture) {
+	   takePicture.onchange = function (event) {
+		   var files = event.target.files;
+		   if (files && files.length > 0) {
+			   file = files[0];
+			   try {
+				   var URL = window.URL || window.webkitURL;
+				   showPicture.onload = function(event) {
+					   Result.innerHTML="";
+					   JOB.DecodeImage(showPicture);
+					   URL.revokeObjectURL(showPicture.src);
+				   };
+				   showPicture.src = URL.createObjectURL(file);
+			   }
+			   catch (e) {
+				   try {
+					   var fileReader = new FileReader();
+					   fileReader.onload = function (event) {
+						   showPicture.onload = function(event) {
+							   Result.innerHTML="";
+							   JOB.DecodeImage(showPicture);
+						   };
+						   showPicture.src = event.target.result;
+					   };
+					   fileReader.readAsDataURL(file);
+				   }
+				   catch (e) {
+					   Result.innerHTML = "Neither createObjectURL or FileReader are supported";
+				   }
+			   }
+		   }
+	   };
+   }
+
+   function barcodescan(){
+	   document.getElementById('Take-Picture').click();
+	   return false;
+   }
+
+   // function SearchBook(){
+   //  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+   //  var book_data=[];
+   //  $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
+   //   function(data) {
+   //    $.each(data, function(key, val) {
+   // 	   try{
+   // 		   document.getElementById(key).value=val;
+   // 		   }
+   // 	   catch(err){
+   // 	   }
+   //    }
+   //    );
+   //   }
+   //  );
+   //  return false;
+
+   function SearchBook(){
+	   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	   var book_data=[];
+	   $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
+		   function(data) {
+			   $.each(data, function(key, val) {
+				   try{
+					   if (key == 'image') {
+					   	   document.getElementById(key).src = val + '?type=m106';
+					   } else if (key == 'link') {
+						   document.getElementById(key).href = val;
+					   } else {
+						   document.getElementById(key).value = val;
+					   }
+				   } catch(err){ }
+			   }
+			   );
+		   }
+	   );
+	   return false;
 
 }
-		
+
 </script>
 
-
-
 <script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(function() {
+		'use strict';
 
-  window.addEventListener('load', function() {
-    var form = document.getElementById('needs-validation');
-    form.addEventListener('submit', function(event) {
-      if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      form.classList.add('was-validated');
-    }, false);
-  }, false);
-})();
+		window.addEventListener('load', function() {
+			var form = document.getElementById('needs-validation');
+			form.addEventListener('submit', function(event) {
+				if (form.checkValidity() === false) {
+					event.preventDefault();
+					event.stopPropagation();
+				}
+				form.classList.add('was-validated');
+			}, false);
+		}, false);
+	})();
+
 </script>
 
 

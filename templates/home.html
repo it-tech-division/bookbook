@@ -35,9 +35,9 @@
               <div class="col">
 			    {% include 'modal.html' %}
                 {% if book.avalability == '1' %}
-                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여대기</button>
+                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">예약 중</button>
                 {% elif book.avalability == '2' %}
-                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여중</button>
+                  <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여 중</button>
                 {% else %}
                   <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}">대여하기</button>
                 {% endif %}

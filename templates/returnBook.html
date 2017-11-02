@@ -2,23 +2,30 @@
 
 <script type="text/javascript" src="static/BarcodeReader.js"></script>
 
+<section class="jumbotron text-center">
+  <div class="container">
+      <h1 class="jumbotron-heading">책을 반납할게요.</h1>
+    <p class="lead text-muted">
+	책은 잘 보셨나요?<br>
+	재밌게 보셨다면, 책도 제때에 돌려주어야 겠지요?<br>
+    돌려주실 땐 감사의 인사도 빼먹지 않는 센스!!<br>
+    </p>
+  </div>
+</section>
+
 <form class="form-horizontal" action="/return_book" method="post">
 
-      <p class="h2 text-center mb-4">책 반납하기</p>
-
-      <div class="md-form">
-        <i class="fa fa-star prefix grey-text"></i>
-        <input type="text" id="name" name="name" class="form-control" placeholder="반납하는 분 이름을 입력하세요.">
+      <div class="md-form col-lg-6">
+        <input type="text" id="name" name="name" class="form-control" placeholder="반납하는 분 이름을 입력하세요." required>
       </div>
 
-      <div class="md-form">
-        <i class="fa fa-envelope prefix grey-text"></i>
-        <input type="text" id="email" name="email" class="form-control" placeholder="반납하는 분 메일을 입력하세요.">
+      <div class="md-form col-lg-6">
+        <input type="text" id="email" name="email" class="form-control" placeholder="반납하는 분 메일을 입력하세요." required>
       </div>
 
       <div class="form-group">
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary btn-lg btn-block">조회하기</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">빌린 책 조회해 보기</button>
         </div>
       </div>
       <hr color="#f0f0f5" width="100%" align="center">
@@ -47,7 +54,7 @@
               {{book.title}}<p>
               <small>{{book.author}}<br>{{book.created_date}}</small>
               <div class="col">
-			    {% include 'modal.html' %} 
+			    {% include 'modal.html' %}
                 <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >반납하기</button>
               </div>
             </div>
@@ -58,7 +65,7 @@
 
       {% endfor %}
 
- 
+
       <!--
   <hr color="#f0f0f5" width="100%" align="center">
   <div class="form-group">
@@ -81,7 +88,7 @@
   </div>
   <input type="hidden" id="image" name="image" value="">
   <input type="hidden" id="link" name="link" value="">
-  
+
   <div class="form-group">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary btn-lg btn-block">등록하기</button>
