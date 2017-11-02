@@ -195,7 +195,13 @@
 			function(data) {
 				$.each(data, function(key, val) { 
 					try{
-						document.getElementById(key).value=val; 
+						if(key=="image"){
+							document.getElementById(key).src=val;
+							}
+						else{
+							document.getElementById(key).value=val; 
+						}
+						
 						}
 					catch(err){
 					}

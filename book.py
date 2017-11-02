@@ -79,7 +79,7 @@ def borrow_booklog(query):
 def approve_booklog(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2 반납대기:avalability=3
 	sql = "UPDATE book_info set avalability=2 where book_no=%s"
 	#send_mail
 	cur.execute(sql,(query['book_no']))
@@ -100,14 +100,12 @@ def return_booksearch(query):
 def return_booklog(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	sql = "UPDATE book_log set return_date=CURDATE() where book_no=%s and borrower=%s, borrower_email=%s, borower_date=%s"
-	cur.execute(sql,(query['book_no'],query['name'],query['email'],query['return_date']))
-	conn.commit()
-	
-	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2
-	sql = "UPDATE book_info set avalability=0 where book_no=%s"
-	#send_mail
+	#빌린 책 상태를 대여중으로 변경 대여가능:avalability=0 대여대기:avalability=1 대여중:avalability=2 반납대기:avalability=3
+	sql = "UPDATE book_info set avalability=3 where book_no=%s"
 	cur.execute(sql,(query['book_no']))
+	#sql = "UPDATE book_log set return_date=CURDATE() where no=%s and borrower=%s and borrower_email=%s and borrow_date=%s"
+	#print(sql%(query['book_no'],query['name'],query['email'],query['borrow_date']))
+	#cur.execute(sql,(query['book_no'],query['name'],query['email'],query['borrow_date']))
 	conn.commit()
 	conn.close()
 

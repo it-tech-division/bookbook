@@ -78,7 +78,16 @@ def return_book():
 	query = request.form
 	#print(query)
 	borrow_bookinfo=return_booksearch(query)
+	#print (borrow_bookinfo)
 	return render_template("returnBook.html",books=borrow_bookinfo)	
+
+@app.route('/return_book_procees1', methods=['POST','GET'])	
+def return_book_procees1():
+	query = request.form
+	return_booklog(query)
+	messages=query['title']+" 반납신청 완료"
+	book_list = search_book("%","title")
+	return render_template('home.html', books=book_list,alert_messages=messages)
 
 # test
 @app.route('/mailform')
