@@ -61,7 +61,7 @@
 	        <div class="well well-sm">
 	          <div class="row">
 	            <div class="col-4">
-	              <a href="#" id="link" name="link"><img src="#" id="image" name="image" alt="book-cover" class="rounded img-responsive" /></a>
+	              <a href="#" id="preview_link" name="preview_link"><img src="#" id="preview_image" name="preview_image" alt="book-cover" class="rounded img-responsive" /></a>
 	            </div>
 	            <div class="col-8">
 	              <p><input type="text" class="form-control" id="title" name="title" placeholder="책 제목" readonly="true">
@@ -198,8 +198,10 @@
 			   $.each(data, function(key, val) {
 				   try{
 					   if (key == 'image') {
-					   	   document.getElementById(key).src = val + '?type=m106';
+					   	   document.getElementById('preview_image').src = val + '?type=m106';
+					   	   document.getElementById(key).value = val;
 					   } else if (key == 'link') {
+						   document.getElementById('preview_link').href = val;
 						   document.getElementById(key).href = val;
 					   } else {
 						   document.getElementById(key).value = val;
