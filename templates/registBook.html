@@ -37,9 +37,9 @@
 	<div class="md-form">
 		<div class="col-lg">
 			<div class="input-group">
-				<input type="number" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 직접 입력하거나, 스캔해 주세요." aria-label="Search for..." required>
+				<input type="number" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 입력해 주세요." aria-label="Search for..." required>
 				<span class="input-group-btn">
-		<button class="btn btn-default btn-sm" onclick="return SearchBook();">입력</button>
+		<button class="btn btn-default btn-sm" onclick="return SearchBook();">직접입력</button>
         <button class="btn btn-secondary btn-sm" type="button" onclick="return barcodescan();">자동스캔</button>
 		<canvas width="320" height="240" id="picture" style="display:none"></canvas>
 		<input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
