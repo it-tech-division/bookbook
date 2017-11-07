@@ -15,7 +15,7 @@
   </div>
 </section>
 
-<form class="container" action="/regist_book" method="post" id="needs-validation">
+<form class="container" action="/regist_book" method="post" id="needs-validation" onsubmit="return checkISBN();">
 	<div class="md-form">
 		<div class="col-lg">
 			<input type="text" id="name" name="name" class="form-control" placeholder="등록자 이름을 입력하세요." required>
@@ -173,7 +173,17 @@
 	   return false;
    }
 
+   function checkISBN(){
+	   if (document.getElementById("inputISBN").value.length != 13) {
+		   alert("13자리 ISBN 값을 입력해 주세요.");
+		   return false;
+	   } else {
+		   return true;
+	   }
+   }
+
    function SearchBook(){
+	   checkISBN();
 	   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	   var book_data=[];
 	   $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
@@ -195,29 +205,33 @@
 		   }
 	   );
 	   return false;
+	}
 
-}
+   // function SearchBook(){
+   //  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+   //  var book_data=[];
+   //  $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
+   //   function(data) {
+   //    $.each(data, function(key, val) {
+   // 	   try{
+   // 		   if (key == 'image') {
+   // 		   	   document.getElementById('preview_image').src = val + '?type=m106';
+   // 		   	   document.getElementById(key).value = val;
+   // 		   } else if (key == 'link') {
+   // 			   document.getElementById('preview_link').href = val;
+   // 			   document.getElementById(key).value = val;
+   // 		   } else {
+   // 			   document.getElementById(key).value = val;
+   // 		   }
+   // 	   } catch(err){ }
+   //    }
+   //    );
+   //   }
+   //  );
+   //  return false;
+   //
 
 </script>
-
-<!-- <script>
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-	(function() {
-		'use strict';
-
-		window.addEventListener('load', function() {
-			var form = document.getElementById('needs-validation');
-			form.addEventListener('submit', function(event) {
-				if (form.checkValidity() === false) {
-					event.preventDefault();
-					event.stopPropagation();
-				}
-				form.classList.add('was-validated');
-			}, false);
-		}, false);
-	})();
-
-</script> -->
 
 
 {% endblock %}
