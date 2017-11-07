@@ -183,7 +183,9 @@
    }
 
    function SearchBook(){
-	   checkISBN();
+	   if (checkISBN() == false) {
+		   return false;
+	   }
 	   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	   var book_data=[];
 	   $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
