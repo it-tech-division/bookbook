@@ -44,7 +44,6 @@
       {% for book in books %}
 
       <div class="col-sm-12">
-        <div class="well well-sm">
           <div class="row">
             <div class="col-3">
               <a href="{{book.link}}"><img src="{{book.image}}?type=m106" onerror="this.src='http://static.naver.net/book/image/noimg_m172.gif'" alt="book-cover" class="rounded img-responsive" width="80" height="120"/></a>
@@ -60,7 +59,6 @@
             </div>
           </div>
           <hr />
-        </div>
       </div>
 
       {% endfor %}
