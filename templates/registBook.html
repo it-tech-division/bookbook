@@ -8,16 +8,16 @@
     <p class="lead text-muted">
 	나눔을 실천하는 방법은 간단합니다.<br>
 	아래 이름과 이메일을 적어주시고,<br>
-	책 뒷면에 있는 ISBN만 입력해 주시면 끝!<br>
+	책 뒷면에 있는 ISBN을 입력하면 끝!<br>
 	너무 쉽죠?<br>
 	입력이 귀찮으시면, 자동스캔 기능을 사용해 보세요.
     </p>
   </div>
 </section>
 
-<form class="container" action="/regist_book" method="post" id="needs-validation" novalidate>
+<form class="container" action="/regist_book" method="post" id="needs-validation" onsubmit="return checkISBN();">
 	<div class="md-form">
-		<div class="col-lg-6">
+		<div class="col-lg">
 			<input type="text" id="name" name="name" class="form-control" placeholder="등록자 이름을 입력하세요." required>
 			<div class="invalid-feedback">
 			이름을 빼먹으시면 안되겠죠?
@@ -26,8 +26,8 @@
 	</div>
 
 	<div class="md-form">
-		<div class="col-lg-6">
-			<input type="text" id="email" name="email" class="form-control" placeholder="등록자 이메일을 입력하세요." required>
+		<div class="col-lg">
+			<input type="email" id="email" name="email" class="form-control" placeholder="등록자 이메일을 입력하세요." required>
 			<div class="invalid-feedback">
 			자동 알림을 위해 이메일도 꼭 입력해 주세요.
 			</div>
@@ -35,11 +35,11 @@
 	</div>
 
 	<div class="md-form">
-		<div class="col-lg-6">
+		<div class="col-lg">
 			<div class="input-group">
-				<input type="text" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 직접 입력하거나, 스캔해 주세요." aria-label="Search for..." required>
+				<input type="number" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 입력해 주세요." aria-label="Search for..." required>
 				<span class="input-group-btn">
-		<button class="btn btn-default btn-sm" onclick="return SearchBook();">입력</button>
+		<button class="btn btn-default btn-sm" onclick="return SearchBook();">직접입력</button>
         <button class="btn btn-secondary btn-sm" type="button" onclick="return barcodescan();">자동스캔</button>
 		<canvas width="320" height="240" id="picture" style="display:none"></canvas>
 		<input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
@@ -76,7 +76,7 @@
 
 	<div class="form-group">
 		<label for="inputDetail" class="col-sm-2 control-label">상세 내용</label>
-		<div class="col-sm-10">
+		<div class="col-sm">
 			<textarea class="form-control" id="description" name="description" placeholder="Detail" rows="5"></textarea>
 		</div>
 	</div>
@@ -85,7 +85,7 @@
 
     <hr />
 	<div class="form-group">
-		<div class="col-sm-10">
+		<div class="col-sm">
 			<button type="submit" class="btn btn-primary btn-lg btn-block">이 책을 공유하겠습니다.</button>
 		</div>
 	</div>
@@ -173,24 +173,19 @@
 	   return false;
    }
 
-   // function SearchBook(){
-   //  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-   //  var book_data=[];
-   //  $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
-   //   function(data) {
-   //    $.each(data, function(key, val) {
-   // 	   try{
-   // 		   document.getElementById(key).value=val;
-   // 		   }
-   // 	   catch(err){
-   // 	   }
-   //    }
-   //    );
-   //   }
-   //  );
-   //  return false;
+   function checkISBN(){
+	   if (document.getElementById("inputISBN").value.length != 13) {
+		   alert("13자리 ISBN 값을 입력해 주세요.");
+		   return false;
+	   } else {
+		   return true;
+	   }
+   }
 
    function SearchBook(){
+	   if (checkISBN() == false) {
+		   return false;
+	   }
 	   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	   var book_data=[];
 	   $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
@@ -212,27 +207,31 @@
 		   }
 	   );
 	   return false;
+	}
 
-}
-
-</script>
-
-<script>
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-	(function() {
-		'use strict';
-
-		window.addEventListener('load', function() {
-			var form = document.getElementById('needs-validation');
-			form.addEventListener('submit', function(event) {
-				if (form.checkValidity() === false) {
-					event.preventDefault();
-					event.stopPropagation();
-				}
-				form.classList.add('was-validated');
-			}, false);
-		}, false);
-	})();
+   // function SearchBook(){
+   //  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+   //  var book_data=[];
+   //  $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
+   //   function(data) {
+   //    $.each(data, function(key, val) {
+   // 	   try{
+   // 		   if (key == 'image') {
+   // 		   	   document.getElementById('preview_image').src = val + '?type=m106';
+   // 		   	   document.getElementById(key).value = val;
+   // 		   } else if (key == 'link') {
+   // 			   document.getElementById('preview_link').href = val;
+   // 			   document.getElementById(key).value = val;
+   // 		   } else {
+   // 			   document.getElementById(key).value = val;
+   // 		   }
+   // 	   } catch(err){ }
+   //    }
+   //    );
+   //   }
+   //  );
+   //  return false;
+   //
 
 </script>
 
