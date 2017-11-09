@@ -52,7 +52,7 @@ def get_book():
 @app.route('/regist_book', methods=['POST','GET'])
 def regist_book():
 	query=request.form
-	#print(query)
+	print(query)
 	insert_book(query)
 	messages=query['title']+" 책 등록 성공"
 	book_list = search_book("%","title")
