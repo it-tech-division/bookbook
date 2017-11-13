@@ -12,7 +12,7 @@
   </div>
 </section>
 
-<form class="container" action="/regist_book" method="post" id="needs-validation" onsubmit="return checkISBN();">
+<form class="container" action="/regist_user" method="post" id="registForm" name="registForm">
 	<div class="md-form">
 		<div class="col-lg">
 			<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요." required>
@@ -20,11 +20,14 @@
 			이름을 빼먹으시면 안되겠죠?
 			</div>
 		</div>
-	</div>
+	</div>	
 
 	<div class="md-form">
 		<div class="col-lg">
+		  <div class="input-group">
 			<input type="email" id="email" name="email" class="form-control" placeholder="이메일을 입력하세요." required>
+			<!-- <button class="btn btn-default btn-sm" onclick="return checkEmail();">중복체크</button> -->
+		  </div>
 			<div style="color:red;">
 			Email을 다시한 번 확인해주세요. 잘못된 Email 주소를 입력할 시 대여/반납 처리가 불가능합니다.
 			</div>
@@ -36,7 +39,7 @@
 	
 	<div class="md-form">
 		<div class="col-lg">
-			<input type="password" id="pass1" name="pass1" class="form-control" placeholder="패스워드를 입력하세요." required>
+			<input type="password" id="password" name="password" class="form-control" placeholder="패스워드를 입력하세요." required>
 		</div>
 	</div>
 	
@@ -48,7 +51,7 @@
 
 	<div class="form-group">
 		<div class="col-sm">
-			<button type="submit" class="btn btn-primary btn-lg btn-block">부끄부끄 가입</button>
+			<button type="button" onclick="return registUser()" class="btn btn-primary btn-lg btn-block">부끄부끄 가입</button>
 		</div>
 	</div>
 	
@@ -56,146 +59,40 @@
 
 
 <script type="text/javascript">
-   var takePicture = document.querySelector("#Take-Picture"),
-   showPicture = document.createElement("img");
-   Result = document.getElementById("inputISBN");
-   var canvas =document.getElementById("picture");
-   var ctx = canvas.getContext("2d");
-   JOB.Init();
-   JOB.SetImageCallback(function(result) {
-	   if(result.length > 0){
-		   var tempArray = [];
-		   for(var i = 0; i < result.length; i++) {
-			   tempArray.push(result[i].Format+" : "+result[i].Value);
-		   }
-		   // Result.value=tempArray;
-		   Result.value=tempArray[0].split(':')[1].trim();
-		   SearchBook();
-	   }else{
-		   if(result.length === 0) {
-			   Result.innerHTML="Decoding failed.";
-		   }
-	   }
-   });
-   JOB.PostOrientation = true;
-   JOB.OrientationCallback = function(result) {
-	   canvas.width = result.width;
-	   canvas.height = result.height;
-	   var data = ctx.getImageData(0,0,canvas.width,canvas.height);
-	   for(var i = 0; i < data.data.length; i++) {
-		   data.data[i] = result.data[i];
-	   }
-	   ctx.putImageData(data,0,0);
-   };
-   JOB.SwitchLocalizationFeedback(true);
-   JOB.SetLocalizationCallback(function(result) {
-	   ctx.beginPath();
-	   ctx.lineWIdth = "2";
-	   ctx.strokeStyle="red";
-	   for(var i = 0; i < result.length; i++) {
-		   ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height);
-	   }
-	   ctx.stroke();
-   });
-   if(takePicture && showPicture) {
-	   takePicture.onchange = function (event) {
-		   var files = event.target.files;
-		   if (files && files.length > 0) {
-			   file = files[0];
-			   try {
-				   var URL = window.URL || window.webkitURL;
-				   showPicture.onload = function(event) {
-					   Result.innerHTML="";
-					   JOB.DecodeImage(showPicture);
-					   URL.revokeObjectURL(showPicture.src);
-				   };
-				   showPicture.src = URL.createObjectURL(file);
-			   }
-			   catch (e) {
-				   try {
-					   var fileReader = new FileReader();
-					   fileReader.onload = function (event) {
-						   showPicture.onload = function(event) {
-							   Result.innerHTML="";
-							   JOB.DecodeImage(showPicture);
-						   };
-						   showPicture.src = event.target.result;
-					   };
-					   fileReader.readAsDataURL(file);
-				   }
-				   catch (e) {
-					   Result.innerHTML = "Neither createObjectURL or FileReader are supported";
-				   }
-			   }
-		   }
-	   };
-   }
-
-   function barcodescan(){
-	   document.getElementById('Take-Picture').click();
-	   return false;
-   }
-
-   function checkISBN(){
-	   if (document.getElementById("inputISBN").value.length != 13) {
-		   alert("13자리 ISBN 값을 입력해 주세요.");
+ function checkPass(){
+	   if (document.getElementById("password").value != document.getElementById("pass2").value) {
+		   alert("password를 확인해주세요!");
 		   return false;
 	   } else {
 		   return true;
 	   }
    }
-
-   function SearchBook(){
-	   if (checkISBN() == false) {
+   
+ /*function checkEmail(){
+ 
+	var email = document.getElementById("email").value
+	var emailAddr = email.splite("@");
+ 
+	if (email.indexOf("@") != -1) {
+	   if ( emailAddr[1] != 'hyundai.com' || emailAddr[1] != 'kia.com') {
+		   alert("EMAIL은 hyundai.com 또는 kia.com 만 사용 가능합니다.");
+		   return false;
+	   } else {
+		   return true;
+	   }
+	   
+	}
+   }*/
+   
+ function registUser() {
+   if (checkPass() == false) {
 		   return false;
 	   }
-	   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-	   var book_data=[];
-	   $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
-		   function(data) {
-			   $.each(data, function(key, val) {
-				   try{
-					   if (key == 'image') {
-					   	   document.getElementById('preview_image').src = val + '?type=m106';
-					   	   document.getElementById(key).value = val;
-					   } else if (key == 'link') {
-						   document.getElementById('preview_link').href = val;
-						   document.getElementById(key).value = val;
-					   } else {
-						   document.getElementById(key).value = val;
-					   }
-				   } catch(err){ }
-			   }
-			   );
-		   }
-	   );
-	   return false;
-	}
-
-   // function SearchBook(){
-   //  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-   //  var book_data=[];
-   //  $.getJSON($SCRIPT_ROOT + '/_get_book', {ISBN: $('input[name="inputISBN"]').val(),},
-   //   function(data) {
-   //    $.each(data, function(key, val) {
-   // 	   try{
-   // 		   if (key == 'image') {
-   // 		   	   document.getElementById('preview_image').src = val + '?type=m106';
-   // 		   	   document.getElementById(key).value = val;
-   // 		   } else if (key == 'link') {
-   // 			   document.getElementById('preview_link').href = val;
-   // 			   document.getElementById(key).value = val;
-   // 		   } else {
-   // 			   document.getElementById(key).value = val;
-   // 		   }
-   // 	   } catch(err){ }
-   //    }
-   //    );
-   //   }
-   //  );
-   //  return false;
-   //
-
+   else {
+		document.registForm.submit();
+	   }
+	   
+   }
 </script>
 
 
