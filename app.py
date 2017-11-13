@@ -18,7 +18,7 @@ def _scroll():
 	
 @app.route('/about')
 def about():
-    return render_template('about.html')
+	return render_template('about.html')
 
 @app.route('/scan')
 def scan():
@@ -26,7 +26,7 @@ def scan():
 
 @app.route('/scroll')
 def scroll():
-    return render_template('scroll.html')
+	return render_template('scroll.html')
 
 @app.route('/regist')
 def regist():
@@ -56,7 +56,7 @@ def get_book():
 	#print (ISBN)
 	bookinfo = get_bookinfo(ISBN)
 	return jsonify(bookinfo)
-	
+
 @app.route('/regist_book', methods=['POST','GET'])
 def regist_book():
 	query=request.form
@@ -74,22 +74,22 @@ def borrow_book():
 	messages=query['title']+" 대여 신청 완료"
 	book_list = search_book("%","title")
 	return render_template('home.html', books=book_list,alert_messages=messages)
-	
-@app.route('/approve_book', methods=['GET'])		
+
+@app.route('/approve_book', methods=['GET'])
 def approve_book():
 	query=request.args
 	approve_booklog(query)
 	return redirect(url_for('index'))
 
-@app.route('/return_book', methods=['POST','GET'])	
+@app.route('/return_book', methods=['POST','GET'])
 def return_book():
 	query = request.form
 	#print(query)
 	borrow_bookinfo=return_booksearch(query)
 	#print (borrow_bookinfo)
-	return render_template("returnBook.html",books=borrow_bookinfo)	
+	return render_template("returnBook.html",books=borrow_bookinfo)
 
-@app.route('/return_book_procees1', methods=['POST','GET'])	
+@app.route('/return_book_procees1', methods=['POST','GET'])
 def return_book_procees1():
 	query = request.form
 	return_booklog(query)
@@ -121,6 +121,5 @@ def registUser():
 	
 	
 if __name__ == '__main__':
-    runner.run()
-    #	app.run(debug=True)
-
+	runner.run()
+	#	app.run(debug=True)
