@@ -51,7 +51,7 @@ def insert_book(query):
 def search_book(string, type, start, end):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	sql = 'SELECT * FROM book_info where title like \'%'+string+'%\' ORDER BY avalability LIMIT '+start+','+end
+	sql = 'SELECT * FROM book_info where title like \'%'+string+'%\' ORDER BY avalability asc, book_no desc LIMIT '+start+','+end
 	cur.execute(sql)
 	rows = cur.fetchall()
 	conn.close()
@@ -141,4 +141,13 @@ def send_mail(status, data):
 	smtp.sendmail('bookbook@kia.com', 'yh.kim@kia.com', msg.as_string())
 	 
 	smtp.quit()
+	
+def insert_user(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	sql = "INSERT INTO user_info(name,email,password) values(%s,%s,%s)"
+	print (query['name'],query['email'],query['password'])
+	cur.execute(sql,(query['name'],query['email'],query['password']))
+	conn.commit()
+	conn.close()
 
