@@ -154,3 +154,18 @@ def insert_user(query):
 	conn.commit()
 	conn.close()
 
+def login_process(email, password):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#sql = "INSERT INTO user_info(name,email,password) values(%s,%s,%s)"
+	cur.execute("SELECT COUNT(1) FROM user_info WHERE email = %s", email)
+	rows=cur.fetchone()
+	if rows['COUNT(1)']:
+		cur.execute("SELECT password FROM user_info WHERE email = %s;", email)
+		for row in cur.fetchall():
+			if password==row['password']:
+				return "success"
+			else:
+				return "fail"
+	else:
+		return "fail" 

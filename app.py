@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, url_for, redirect,flash
+from flask import Flask,session, jsonify, render_template, request, url_for, redirect,flash
 from flask.ext.runner import Runner
 from book import *
 
@@ -110,10 +110,25 @@ def regist_user():
 @app.route('/mailform')
 def mailform():
     return render_template('mailForm.html')
+
 	
-@app.route('/loginform')
+@app.route('/loginform', methods=['POST','GET'])
 def loginform():
-    return render_template('loginForm.html')
+	if 'email' in session:
+		messages="이미 로그인 되어 있습니다. "
+		book_list = search_book("%","title")
+		return render_template('home.html', books=book_list,alert_messages=messages)
+	if request.method == 'POST':
+		result=login_process(request.form['email'],request.form['password'])
+		if result=="success":
+			session['email'] = request.form['email']
+
+			messages=request.form['email']+"님 환영합니다."
+			book_list = search_book("%","title","0","9")
+			return render_template('home.html', books=book_list,alert_messages=messages)
+		else:
+			messages="아이디, 패스워드를 확인해 주세요."
+	return render_template('loginForm.html')
 	
 @app.route('/registUser')
 def registUser():
@@ -121,5 +136,6 @@ def registUser():
 	
 	
 if __name__ == '__main__':
+	app.secret_key = 'sample_secreat_key'
 	runner.run()
 	#	app.run(debug=True)
