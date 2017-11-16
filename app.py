@@ -119,6 +119,10 @@ def loginform():
 def registUser():
     return render_template('registUser.html')
 	
+@app.route('/findIdPw')
+def findIdPw():
+    return render_template('findIdPw.html')
+	
 	
 if __name__ == '__main__':
 	runner.run()

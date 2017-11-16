@@ -10,22 +10,22 @@
       <form class="form-horizontal" action="/borrow_book" method="post">
 	  <div class="modal-body">
 		  <p>
-          <div class="form-group col-lg-6">
+          <div class="form-group col-lg">
             <label for="recipient-name" class="control-label">도서명:</label>
             <input type="text" class="form-control" id="recipient-title" name="title" placeholder="{{book.title}}" readonly="true">
           </div>
 
-		  <div class="form-group col-lg-6">
+		  <div class="form-group col-lg">
             <label for="recipient-name" class="control-label">신청자 이름 :</label>
-            <input type="text" class="form-control" id="recipient-name" name="borrower_name">
+            <input type="text" class="form-control" id="recipient-name" name="borrower_name" required>
           </div>
 		  <p><p>
-		  <div class="form-group col-lg-6">
+		  <div class="form-group col-lg">
             <label for="recipient-name" class="control-label">이메일 :</label>
-            <input type="email" class="form-control" id="recipient-email" name="borrower_email" placeholder="ex)abcd@hyundai.com">
+            <input type="email" class="form-control" id="recipient-email" name="borrower_email" placeholder="ex)abcd@hyundai.com" required>
           </div>
 		  <p>
-          <div class="form-group col-lg-6">
+          <div class="form-group col-lg">
             <label for="message-text" class="control-label">남기실 말씀 (선택사항):</label>
             <textarea class="form-control" id="message-text" name="message"></textarea>
           </div>
@@ -41,3 +41,5 @@
     </div>
   </div>
 </div>
+
+

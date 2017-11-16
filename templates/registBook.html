@@ -37,16 +37,22 @@
 	<div class="md-form">
 		<div class="col-lg">
 			<div class="input-group">
-				<input type="number" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 입력해 주세요." aria-label="Search for..." required>
-				<span class="input-group-btn">
+				<input type="number" class="form-control" id="inputISBN" name="inputISBN" placeholder="ISBN을 입력해 주세요." 
+				title="ISBN이란 도서 바코드 아래에 위치한 13자리 도서코드를 말해요^^" aria-label="Search for..." required>
+	<span class="input-group-btn">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#feedback" >
+			<i class="fa fa-question grey-text" aria-hidden="true"></i></button>
 		<button class="btn btn-default btn-sm" onclick="return SearchBook();">직접입력</button>
         <button class="btn btn-secondary btn-sm" type="button" onclick="return barcodescan();">자동스캔</button>
 		<canvas width="320" height="240" id="picture" style="display:none"></canvas>
 		<input id="Take-Picture" type="file" accept="image/*;capture=camera" style="display:none">
       </span>
 			</div>
-			<div class="invalid-feedback">
-				책의 공유 정보인 ISBN 값은 필수입니다.
+			<div class="collapse" id="feedback">
+			   <p style="text-align:left;">
+			   <img class="card-img-top" src="http://10.8.70.217:8888/static/checkISBN.png" style="width:20%; height:auto;">
+			   </p>
+				ISBN이란 책 뒤편 바코드 아래에 적혀있는 13자리의 책 고유번호를 말해요^^
 			</div>
 		</div>
 		<!-- <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button> -->
