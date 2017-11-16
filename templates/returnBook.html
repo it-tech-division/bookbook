@@ -24,7 +24,7 @@
       </div>
 
       <div class="form-group">
-        <div class="col-sm-10">
+        <div class="col-sm">
           <button type="submit" class="btn btn-primary btn-lg btn-block">빌린 책 조회해 보기</button>
         </div>
       </div>
@@ -39,36 +39,28 @@
         <button class="btn btn-default" onclick="return SearchBook();">직접 입력</button>
       </div>
       //-->
-</form>
+
     <div class="row">
-    {% for book in books %}
-	<form class="form-horizontal" action="/return_book_procees1" method="post">
-      
-	  <div class="col-sm-12">
-        <div class="well well-sm">
+      {% for book in books %}
+
+      <div class="col-sm-12">
           <div class="row">
-            <div class="col-4">
-              <a href="{{book.link}}"><img src="{{book.image}}?type=m106" alt="book-cover" class="rounded img-responsive" /></a>
+            <div class="col-3">
+              <a href="{{book.link}}"><img src="{{book.image}}?type=m106" onerror="this.src='http://static.naver.net/book/image/noimg_m172.gif'" alt="book-cover" class="rounded img-responsive" width="80" height="120"/></a>
             </div>
-            <div class="col-8">
+            <div class="col-9">
               <p>
               {{book.title}}<p>
               <small>{{book.author}}<br>{{book.created_date}}</small>
               <div class="col">
-
-                            
-				  <button type="submit" class="btn btn-primary float-right btn-sm">반납하기</button>
-			
-
+			    {% include 'modal.html' %}
+                <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >반납하기</button>
               </div>
             </div>
           </div>
           <hr />
-        </div>
       </div>
-	  <input type="hidden" id="book_no" name="book_no" value="{{book.book_no}}">
-	  
-	  </form>
+
       {% endfor %}
 
 
@@ -101,6 +93,6 @@
     </div>
   </div>
   //-->
-
+</form>
 
 {% endblock %}

@@ -50,10 +50,10 @@ def insert_book(query):
 	conn.commit()
 	conn.close()
 
-def search_book(string, type):
+def search_book(string, type, start, end):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	sql = 'SELECT * FROM book_info where title like \'%'+string+'%\' ORDER BY BOOK_NO desc'
+	sql = 'SELECT * FROM book_info where title like \'%'+string+'%\' ORDER BY avalability LIMIT '+start+','+end
 	cur.execute(sql)
 	rows = cur.fetchall()
 	conn.close()

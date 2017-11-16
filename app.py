@@ -7,7 +7,7 @@ runner = Runner(app)
 
 @app.route('/')
 def index():
-	book_list = search_book("%","title")
+	book_list = search_book("%","title","0","9")
 	return render_template('home.html', books=book_list)
 
 @app.route('/about')
@@ -35,7 +35,9 @@ def returns():
 @app.route('/search', methods=['POST','GET'])
 def search():
 	query = request.form['query'].lower()
-	book_list = search_book(query, "title")
+	start = request.form['start']
+	end = request.form['end']
+	book_list = search_book(query, "title", start, end)
 	if book_list:
 		messages=""
 	else:

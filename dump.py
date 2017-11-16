@@ -4,6 +4,7 @@ import urllib.request
 import json, sys
 import pymysql
 import pprint, re
+from gtts import gTTS
 
 CLIENT_ID = "ENRbt0kUz4t8IFpMUrXP"
 CLIENT_SECRET = "rH72o8liHs"
@@ -55,6 +56,13 @@ def search_book(string, type):
 	rows = cur.fetchall()
 	return rows
 
+def text_to_speech(something_to_say):
+	tts = gTTS(text=something_to_say, lang='ko', slow=True)
+	tts.save('output.mp3')
+#	f = TemporaryFile()
+#	tts.write_to_fp(f)
+
+
 
 if __name__ == '__main__':
 	for no, book in enumerate(get_bookinfo(sys.argv[1], int(sys.argv[2]))):
@@ -65,5 +73,7 @@ isbn : %(isbn)s
 author : %(author)s
 image : %(image)s
 link : %(link)s
+description : %(description)s
 ''' % book)
-		insert_book(book)
+        #text_to_speech(book['description'])
+        #insert_book(book)
