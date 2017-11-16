@@ -71,18 +71,18 @@
 
   <body>
 	 <div class="wrapper">
-		<form class="form-signin"> <br>      
+		<form class="form-signin" method="POST" action="/loginform"> <br>      
 		   <p class="h3 text-center mb-4"><strong>부끄부끄</strong></p>
 
 			<div class="md-form">
 				<i class="fa fa-envelope prefix grey-text"></i>
-				<input type="email" id="form2" class="form-control" required>
+				<input type="email" id="email" name="email" class="form-control" required>
 				<label for="form2">Email을 입력하세요.</label>
 			</div>
 
 			<div class="md-form">
 				<i class="fa fa-unlock-alt prefix grey-text"></i>
-				<input type="password" id="form2" class="form-control" required>
+				<input type="password" id="password" name="password" class="form-control" required>
 				<label for="form34">패스워드를 입력하세요.</label>
 			</div>
 			<input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me <br><br>
@@ -90,7 +90,7 @@
 				<button class="btn btn-lg btn-unique btn-block" type="submit"> Login </button>
 			</div>
 			<div class="text-center">
-			<br><a href="/registUser" style="color:gray;"><i class="fa fa-user prefix grey-text"></i> 회원가입 </a> &emsp;  <a href="/registUser" style="color:gray;><i class="fa fa-key prefix grey-text"></i> ID/PASSWORD 찾기 </a> 
+			<br><a href="/registUser" style="color:gray;"><i class="fa fa-user prefix grey-text"></i> 회원가입 </a> &emsp;  <a href="/registUser" style="color:gray;"><i class="fa fa-key prefix grey-text"></i> ID/PASSWORD 찾기 </a> 
 			</div>
       </span>
 		</form>
