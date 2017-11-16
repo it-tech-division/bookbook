@@ -1,0 +1,99 @@
+{% extends 'layout.html' %} {% block body %}
+
+<script type="text/javascript" src="static/BarcodeReader.js"></script>
+
+<section class="jumbotron text-center">
+  <div class="container">
+      <h1 class="jumbotron-heading">부끄부끄의 새가족을 환영합니다.</h1>
+    <p class="lead text-muted">
+	책 공유는 좋아요♥ 연체는 싫어요! <br>
+	부끄부끄에서 책과 함께 소중한 마음을 나누세요.
+    </p>
+  </div>
+</section>
+
+<form class="container" action="/regist_user" method="post" id="registForm" name="registForm">
+	<div class="md-form">
+		<div class="col-lg">
+			<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요." required>
+			<div class="invalid-feedback">
+			이름을 빼먹으시면 안되겠죠?
+			</div>
+		</div>
+	</div>	
+
+	<div class="md-form">
+		<div class="col-lg">
+		  <div class="input-group">
+			<input type="email" id="email" name="email" class="form-control" placeholder="이메일을 입력하세요." required>
+			<!-- <button class="btn btn-default btn-sm" onclick="return checkEmail();">중복체크</button> -->
+		  </div>
+			<div style="color:red;">
+			Email을 다시한 번 확인해주세요. 잘못된 Email 주소를 입력할 시 대여/반납 처리가 불가능합니다.
+			</div>
+			<div class="invalid-feedback">
+			자동 알림을 위해 이메일도 꼭 입력해 주세요.
+			</div>
+		</div>
+	</div>
+	
+	<div class="md-form">
+		<div class="col-lg">
+			<input type="password" id="password" name="password" class="form-control" placeholder="패스워드를 입력하세요." required>
+		</div>
+	</div>
+	
+	<div class="md-form form-group">
+		<div class="col-lg">
+			<input type="password" id="pass2" name="pass2" class="form-control" placeholder="패스워드를 다시 입력하세요." required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm">
+			<button type="button" onclick="return registUser()" class="btn btn-primary btn-lg btn-block">부끄부끄 가입</button>
+		</div>
+	</div>
+	
+</form>
+
+
+<script type="text/javascript">
+ function checkPass(){
+	   if (document.getElementById("password").value != document.getElementById("pass2").value) {
+		   alert("password를 확인해주세요!");
+		   return false;
+	   } else {
+		   return true;
+	   }
+   }
+   
+ /*function checkEmail(){
+ 
+	var email = document.getElementById("email").value
+	var emailAddr = email.splite("@");
+ 
+	if (email.indexOf("@") != -1) {
+	   if ( emailAddr[1] != 'hyundai.com' || emailAddr[1] != 'kia.com') {
+		   alert("EMAIL은 hyundai.com 또는 kia.com 만 사용 가능합니다.");
+		   return false;
+	   } else {
+		   return true;
+	   }
+	   
+	}
+   }*/
+   
+ function registUser() {
+   if (checkPass() == false) {
+		   return false;
+	   }
+   else {
+		document.registForm.submit();
+	   }
+	   
+   }
+</script>
+
+
+{% endblock %}

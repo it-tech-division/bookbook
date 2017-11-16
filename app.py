@@ -10,9 +10,15 @@ def index():
 	book_list = search_book("%","title","0","9")
 	return render_template('home.html', books=book_list)
 
+@app.route('/_scroll')
+def _scroll():
+	book_list = search_book("%","title","10","20")
+	return render_template('bookList.html', books=book_list)
+	
+	
 @app.route('/about')
 def about():
-    return render_template('about.html')
+	return render_template('about.html')
 
 @app.route('/scan')
 def scan():
@@ -20,7 +26,7 @@ def scan():
 
 @app.route('/scroll')
 def scroll():
-    return render_template('scroll.html')
+	return render_template('scroll.html')
 
 @app.route('/regist')
 def regist():
@@ -37,7 +43,7 @@ def search():
 	query = request.form['query'].lower()
 	start = request.form['start']
 	end = request.form['end']
-	book_list = search_book(query, "title", start, end)
+	book_list = search_book(query, "title", "0", "9")
 	if book_list:
 		messages=""
 	else:
@@ -50,14 +56,14 @@ def get_book():
 	#print (ISBN)
 	bookinfo = get_bookinfo(ISBN)
 	return jsonify(bookinfo)
-	
+
 @app.route('/regist_book', methods=['POST','GET'])
 def regist_book():
 	query=request.form
 	print(query)
 	insert_book(query)
 	messages=query['title']+" 책 등록 성공"
-	book_list = search_book("%","title")
+	book_list = search_book("%","title", "0", "10")
 	return render_template('home.html', books=book_list,alert_messages=messages)
 
 @app.route('/borrow_book', methods=['POST','GET'])
@@ -68,36 +74,52 @@ def borrow_book():
 	messages=query['title']+" 대여 신청 완료"
 	book_list = search_book("%","title")
 	return render_template('home.html', books=book_list,alert_messages=messages)
-	
-@app.route('/approve_book', methods=['GET'])		
+
+@app.route('/approve_book', methods=['GET'])
 def approve_book():
 	query=request.args
 	approve_booklog(query)
 	return redirect(url_for('index'))
 
-@app.route('/return_book', methods=['POST','GET'])	
+@app.route('/return_book', methods=['POST','GET'])
 def return_book():
 	query = request.form
 	#print(query)
 	borrow_bookinfo=return_booksearch(query)
 	#print (borrow_bookinfo)
-	return render_template("returnBook.html",books=borrow_bookinfo)	
+	return render_template("returnBook.html",books=borrow_bookinfo)
 
-@app.route('/return_book_procees1', methods=['POST','GET'])	
+@app.route('/return_book_procees1', methods=['POST','GET'])
 def return_book_procees1():
 	query = request.form
 	return_booklog(query)
 	messages=query['title']+" 반납신청 완료"
 	book_list = search_book("%","title")
 	return render_template('home.html', books=book_list,alert_messages=messages)
+	
+# 회원가입
+@app.route('/regist_user', methods=['POST','GET'])
+def regist_user():
+	query=request.form
+	print(query)
+	insert_user(query)
+	messages=query['name']+"님, 부끄부끄의 새가족이 되신것을 환영합니다."
+	return render_template('loginForm.html')
 
 # test
 @app.route('/mailform')
 def mailform():
     return render_template('mailForm.html')
 	
+@app.route('/loginform')
+def loginform():
+    return render_template('loginForm.html')
+	
+@app.route('/registUser')
+def registUser():
+    return render_template('registUser.html')
+	
 	
 if __name__ == '__main__':
-    runner.run()
-    #	app.run(debug=True)
-
+	runner.run()
+	#	app.run(debug=True)
