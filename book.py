@@ -37,11 +37,13 @@ def get_bookinfo(query):
 			book['description'] = re.sub('<[^>]*>', '', book['description'])
 			book['title'] = book['title'][:99]
 			book['isbn'] = book['isbn'].split()[1]
+			print(book)
 			return book
 
 def insert_book(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
+	print(query)
 	sql = "INSERT INTO book_info(title,isbn,author,image,link,register,register_email,created_date) values(%s,%s,%s,%s,%s,%s,%s,CURDATE())"
 	#print (query['title'],query['inputISBN'],query['author'],query['image'],query['link'],query['name'],query['email'])
 	cur.execute(sql,(query['title'],query['inputISBN'],query['author'],query['image'].split('?')[0],query['link'],query['name'],query['email']))
@@ -123,20 +125,21 @@ def confirm_book_return(query):
 	conn.close()
 	
 def send_mail(status, data):
-	import smtplib
-	from email.mime.text import MIMEText
+	
 	smtp = smtplib.SMTP('localhost')
-	smtp.ehlo()      # say Hello
+	#smtp.ehlo()      # say Hello
 	#smtp.starttls()  # TLS 사용시 필요
 	
 	if status=="borrow":
-		msg = MIMEText('본문 테스트 메시지')
+		f=open('tmp/borrow_notice.html','r')
+		mail_text=f.read()
+		msg = MIMEText(mail_text,'html')
 		msg['Subject'] = '[BookBook]책 대여 요청'
 		
 	if status=="return":
 		msg = MIMEText('본문 테스트 메시지')
 		msg['Subject'] = '[BookBook]책 반납 요청'
-	
+	print('123')
 	msg['To'] = 'yh.kim@kia.com'
 	smtp.sendmail('bookbook@kia.com', 'yh.kim@kia.com', msg.as_string())
 	 
@@ -151,3 +154,18 @@ def insert_user(query):
 	conn.commit()
 	conn.close()
 
+def login_process(email, password):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	#sql = "INSERT INTO user_info(name,email,password) values(%s,%s,%s)"
+	cur.execute("SELECT COUNT(1) FROM user_info WHERE email = %s", email)
+	rows=cur.fetchone()
+	if rows['COUNT(1)']:
+		cur.execute("SELECT password FROM user_info WHERE email = %s;", email)
+		for row in cur.fetchall():
+			if password==row['password']:
+				return "success"
+			else:
+				return "fail"
+	else:
+		return "fail" 
