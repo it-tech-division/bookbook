@@ -91,6 +91,16 @@ def return_book_procees1():
 	book_list = search_book("%","title")
 	return render_template('home.html', books=book_list,alert_messages=messages)
 
+# 회원가입
+@app.route('/regist_user', methods=['POST','GET'])
+def regist_user():
+	query=request.form
+	print(query)
+	insert_user(query)
+	messages=query['name']+"님, 부끄부끄의 새가족이 되신것을 환영합니다."
+	return render_template('loginForm.html')	
+	
+	
 # test
 @app.route('/mailform')
 def mailform():
