@@ -158,3 +158,14 @@ def login_process(email, password):
 				return "fail"
 	else:
 		return "fail"
+		
+		
+def insert_user(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	sql = "INSERT INTO user_info(name,email,password) values(%s,%s,%s)"
+	print (query['name'],query['email'],query['password'])
+	cur.execute(sql,(query['name'],query['email'],query['password']))
+	conn.commit()
+	conn.close()
+
