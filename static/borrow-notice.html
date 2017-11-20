@@ -6,21 +6,52 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- <meta name="viewport" content="width=device-width, user-scalable=no"> //-->
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
-
-    <!-- Custom styles for this template -->
-    <link href="narrow-jumbotron.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="reset.css">      
+	
   </head>
+  
+  <style>
+	html, body, h1, p, a {padding:0;margin:0;line-height:1}
+
+	img {border: 0; opacity:0.5; width:70%; height:auto;} 
+	
+	div.imgTopic {position:relative; width:500px; height:230px; font-family:’Dotum’,’돋움’,sansserif; border: 0px solid #eee} 
+	
+	div.imgTopic a {text-decoration: none} 
+	
+	h1.title {position:absolute;z-index:1;left:5px;bottom:30px} 
+	
+	h1.title a{font-size:22px;font-weight:bold;color:black;} 
+	
+	h1.title a:hover, h1.title a:focus {text-decoration:underline;} 
+	
+	p.content a {font-size:15px;color:black;} 
+	
+	span.information {position:absolute;display:block;left:0;bottom:0;width:295px;height:25px;padding:35px 0 0 5px;background:url(‘./blackOpacity.png’) repeat;}
+  
+  </style>
+  
 
   <body>
 
     <div class="container">
       <main role="main">
 
+<<<<<<< HEAD
+		<div class="imgTopic">
+		 <h1 class="title"><a href="#">부끄부끄</a></h1>
+		 <p class="content"><img src="returnBook.png" alt="" />
+		 <span class="information">
+			등록하신 도서의 대여를 희망합니다.
+		  <br>전달이 완료되면 아래 대여완료 링크를 꾸욱~ 눌러주세요.<br>
+          <button onclick="location.href='http://10.8.70.217:8888/static/borrow-confirmPage.html'"><strong>대여완료 인증하기</strong></button>
+			<br>도서명 : 
+			<br>대여자 : 
+		 </span></p>
+		</div>
+       
+=======
         <div class="jumbotron text-center" style="background-color:#ffffe6; opacity:70%;">
             <h1 class="display-5" style="color:#4d2600"><i class = "fa fa-lightbulb-o prefix"></i> [부끄부끄] "도서 대여 요청 알림"</h1><p>
           <h5 style="color:#404040"><strong>등록하신 도서의 대여 신청이 접수되었습니다.<br>신청자에게 도서를 전달해주세요.
@@ -73,6 +104,7 @@
             </p>
           </div>
         </div>
+>>>>>>> 7c3aa3c36af238282c068dfc64ddfc32ad2d951d
       </main>
 
     </div> <!-- /container -->
