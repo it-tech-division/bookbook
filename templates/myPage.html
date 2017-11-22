@@ -1,0 +1,62 @@
+{% extends 'layout.html' %} {% block body %}
+
+<script type="text/javascript" src="static/BarcodeReader.js"></script>
+
+
+<form class="form-horizontal" action="/return_book" method="post">
+
+
+<h3>*내가 대여한 도서</h3>
+<hr>
+
+    <div class="row">
+      {% for book in books %}
+		{% if book.regit == 'borrow' %}
+		<div class="col-sm-12">
+          <div class="row">
+            <div class="col-3">
+              <a href="{{book.link}}"><img src="{{book.image}}?type=m106" onerror="this.src='http://static.naver.net/book/image/noimg_m172.gif'" alt="book-cover" class="rounded img-responsive" width="80" height="120"/></a>
+            </div>
+            <div class="col-9">
+              <p>
+              {{book.title}}<p>
+              <small>{{book.author}}<br>{{book.created_date}}</small>
+              <div class="col">
+			    {% include 'modal.html' %}
+                <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >반납하기</button>
+              </div>
+            </div>
+          </div>
+          <hr />
+      </div>
+		{% endif %}
+      {% endfor %}
+	  
+<h3>*내가 등록한 도서</h3>
+
+	<div class="row">
+      {% for book in books %}
+		{% if book.regit == 'regit' %}
+		<div class="col-sm-12">
+          <div class="row">
+            <div class="col-3">
+              <a href="{{book.link}}"><img src="{{book.image}}?type=m106" onerror="this.src='http://static.naver.net/book/image/noimg_m172.gif'" alt="book-cover" class="rounded img-responsive" width="80" height="120"/></a>
+            </div>
+            <div class="col-9">
+              <p>
+              {{book.title}}<p>
+              <small>{{book.author}}<br>{{book.created_date}}</small>
+              <div class="col">
+			    {% include 'modal.html' %}
+                <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >수정하기</button>
+                <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >삭제하기</button>
+              </div>
+            </div>
+          </div>
+          <hr />
+      </div>
+		{% endif %}
+      {% endfor %}
+</form>
+
+{% endblock %}
