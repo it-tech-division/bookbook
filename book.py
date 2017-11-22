@@ -169,3 +169,15 @@ def insert_user(query):
 	conn.commit()
 	conn.close()
 
+	
+def myPage_book(string):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	print("book.py : "+string)
+	#sql = 'SELECT * FROM book_info, book_log where book_info.book_no=book_log.no and (register_email=%s or borrower_email= %s)'
+	sql = 'SELECT *,"regit" FROM book_info, book_log where book_info.book_no=book_log.no and register_email=%s union SELECT *,"borrow" FROM book_info, book_log where book_info.book_no=book_log.no and borrower_email=%s;'
+	cur.execute(sql, (string, string))
+	rows = cur.fetchall()
+	conn.close()
+	return rows
+

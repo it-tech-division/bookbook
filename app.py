@@ -141,6 +141,14 @@ def registUser():
 def findIdPw():
     return render_template('findIdPw.html')
 	
+@app.route('/myPage')
+def myPage():
+	
+	string = session['email']
+	print(string)
+	book_list = myPage_book(string)
+	return render_template('myPage.html', books=book_list)
+	
 	
 if __name__ == '__main__':
 	app.secret_key = 'sample_secreat_key'
