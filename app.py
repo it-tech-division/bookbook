@@ -124,6 +124,14 @@ def loginform():
 		else:
 			messages="아이디, 패스워드를 확인해 주세요."
 	return render_template('loginForm.html')
+	
+@app.route('/logout', methods=['POST','GET'])
+def logout():
+	if 'email' in session:
+		session.clear()
+		messages="안전하게 로그아웃 되셨습니다."
+		return render_template('loginForm.html', alert_messages=messages)	
+	
 
 @app.route('/registUser')
 def registUser():
