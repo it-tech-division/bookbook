@@ -149,6 +149,16 @@ def myPage():
 	book_list = myPage_book(string)
 	return render_template('myPage.html', books=book_list)
 	
+@app.route('/deleteBook')
+def deleteBook():
+	string = session['email']
+	query=request.args['delete_no']
+	print(query)
+	messages="도서 삭제가 완료되었습니다."
+	delete_book(query)
+	book_list = myPage_book(string)
+	return render_template('myPage.html', books=book_list, alert_messages=messages)
+	
 	
 if __name__ == '__main__':
 	app.secret_key = 'sample_secreat_key'

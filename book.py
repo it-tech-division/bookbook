@@ -41,6 +41,7 @@ def get_bookinfo(query):
 			return book
 
 def insert_book(query):
+	print("왔다아아아아아")
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	print(query)
@@ -175,9 +176,19 @@ def myPage_book(string):
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	print("book.py : "+string)
 	#sql = 'SELECT * FROM book_info, book_log where book_info.book_no=book_log.no and (register_email=%s or borrower_email= %s)'
-	sql = 'SELECT *,"regit" FROM book_info, book_log where book_info.book_no=book_log.no and register_email=%s union SELECT *,"borrow" FROM book_info, book_log where book_info.book_no=book_log.no and borrower_email=%s;'
+	#sql = 'SELECT *,"regit" FROM book_info, book_log where book_info.book_no=book_log.no and register_email=%s union SELECT *,"borrow" FROM book_info, book_log where book_info.book_no=book_log.no and borrower_email=%s;'
+	sql = 'SELECT *, "regit" FROM book_info where register_email=%s UNION SELECT *, "borrow" FROM book_info WHERE book_no IN (SELECT no FROM book_log WHERE borrower_email=%s);'
 	cur.execute(sql, (string, string))
 	rows = cur.fetchall()
 	conn.close()
 	return rows
+
+def delete_book(query):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	print(query)
+	sql = "delete from book_info where book_no=%s"
+	cur.execute(sql,query)
+	conn.commit()
+	conn.close()
 
