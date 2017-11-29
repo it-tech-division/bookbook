@@ -1,19 +1,25 @@
 {% extends 'layout.html' %} {% block body %}
 
 <script type="text/javascript" src="static/BarcodeReader.js"></script>
+<script>
+	function delete_book(delete_no){
+	alert(delete_no);
+	<!-- alert(document.getElementById('delete_no').value); -->
+	if(confirm('정말 삭제하시겠습니까?'))
+		document.getElementById('delete_no').value=delete_no;
+		document.getElementById('deleteForm').submit();
+	}
 
-
-
-
-<form class="form-horizontal" action="/return_book" method="post">
+</script>
 
 <div class="container">
 <div class="row">
 	<div class="col-sm-6">
+	
 		<div class="jumbotron">
 		<h3><i class="fa fa-book"></i> 나의 대여 현황</h3>
 		<hr>
-
+<form class="form-horizontal" action="/return_book" method="post">
 			<div class="row">
 			  {% for book in books %}
 				{% if book.regit == 'borrow' %}
@@ -40,11 +46,14 @@
 		</div>
 	</div>
 </div>
+
+</form>
+
 	<div class="col-sm-6">
 		<div class="jumbotron">
 		<h3><h3><i class="fa fa-gift"></i> 나의 등록 현황</h3>
 		<hr>
-
+<form class="form-horizontal" id="registForm" name="registForm" method="get">	
 			<div class="row">
 			  {% for book in books %}
 				{% if book.regit == 'regit' %}
@@ -59,8 +68,8 @@
 					  <small>{{book.author}}<br>{{book.created_date}}</small>
 					  <div class="col">
 						{% include 'modal.html' %}
-						<button class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >수정하기</button>
-						<button class="btn btn-danger float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}" >삭제하기</button>
+						<button class="btn btn-danger float-right btn-sm" onclick="delete_book('{{book.book_no}}','{{book.title}}')" >삭제하기</button>
+						
 					  </div>
 					</div>
 				  </div>
@@ -68,11 +77,17 @@
 			  </div>
 				{% endif %}
 			  {% endfor %}
+			</div>
 		</div>
 	</div>
-</div>
-</div>
-</div>
+	</form>
+<form class="form-horizontal" id="deleteForm" name="deleteForm" action="/deleteBook" method="get">	
+	<input type="hidden" id="delete_no" name="delete_no" value=""></input>
 </form>
+
+
+</div>
+</div>
+
 
 {% endblock %}
