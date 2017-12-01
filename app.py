@@ -8,7 +8,15 @@ runner = Runner(app)
 @app.route('/')
 def index():
 	book_list = search_book("%","title","0","30")
-	return render_template('home.html', books=book_list)
+	
+	if 'email' in session:
+		email = session['email']
+		query = get_name(email)
+		print("이름찾아왔다")
+		print(query)
+		return render_template('home.html', books=book_list, register=query)
+	else:		
+		return render_template('home.html', books=book_list)
 
 @app.route('/about')
 def about():
@@ -26,11 +34,23 @@ def scroll():
 def regist():
 	#query = request.form['query'].lower
 	#bookinfo = get_bookinfo(query)
-	return render_template('registBook.html')
+	if 'email' in session:
+		email = session['email']
+		query = get_name(email)
+		print(query)
+		return render_template('registBook.html', register=query)
+	else:	
+		return render_template('registBook.html')
 
 @app.route('/returns')
 def returns():
-	return render_template('returnBook.html')
+	if 'email' in session:
+		email = session['email']
+		query = get_name(email)
+		print(query)
+		return render_template('returnBook.html', register=query)
+	else:	
+		return render_template('returnBook.html')
 
 @app.route('/search', methods=['POST','GET'])
 def search():
@@ -38,11 +58,19 @@ def search():
 	start = request.form['start']
 	end = request.form['end']
 	book_list = search_book(query, "title", start, end)
-	if book_list:
+	
+	if 'email' in session:
+		email = session['email']
+		nameQuery = get_name(email)
+		print("이름찾아왔다")
+		print(query)
 		messages=""
-	else:
+		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
+	else:		
 		messages="검색된 책이 없습니다."
-	return render_template('home.html', books=book_list,alert_messages=messages)
+		return render_template('home.html', books=book_list, alert_messages=messages)
+	
+	
 
 @app.route('/_get_book')
 def get_book():
@@ -63,10 +91,11 @@ def regist_book():
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
 	query=request.form
-	#print(query)
+	print(query)
 	borrow_booklog(query)
 	messages=query['title']+" 대여 신청 완료"
-	book_list = search_book("%","title")
+	print("대여 완료~")
+	book_list = search_book("%","title", "0", "30")
 	return render_template('home.html', books=book_list,alert_messages=messages)
 
 @app.route('/approve_book', methods=['GET'])
@@ -78,10 +107,16 @@ def approve_book():
 @app.route('/return_book', methods=['POST','GET'])
 def return_book():
 	query = request.form
-	#print(query)
+	print(query)
 	borrow_bookinfo=return_booksearch(query)
 	#print (borrow_bookinfo)
-	return render_template("returnBook.html",books=borrow_bookinfo)
+	
+	if 'email' in session:
+		email = session['email']
+		nameQuery = get_name(email)
+		return render_template("returnBook.html",books=borrow_bookinfo, register=nameQuery)
+	else:				
+		return render_template("returnBook.html",books=borrow_bookinfo)
 
 @app.route('/return_book_procees1', methods=['POST','GET'])
 def return_book_procees1():
@@ -117,10 +152,12 @@ def loginform():
 		result=login_process(request.form['email'],request.form['password'])
 		if result=="success":
 			session['email'] = request.form['email']
-
+			email = session['email']
+			nameQuery = get_name(email)
+			print(nameQuery)
 			messages=request.form['email']+"님 환영합니다."
 			book_list = search_book("%","title","0","9")
-			return render_template('home.html', books=book_list,alert_messages=messages)
+			return render_template('home.html', books=book_list,alert_messages=messages, register=nameQuery)
 		else:
 			messages="아이디, 패스워드를 확인해 주세요."
 	return render_template('loginForm.html')
@@ -143,7 +180,6 @@ def findIdPw():
 	
 @app.route('/myPage')
 def myPage():
-	
 	string = session['email']
 	print(string)
 	book_list = myPage_book(string)
@@ -154,9 +190,9 @@ def deleteBook():
 	string = session['email']
 	query=request.args['delete_no']
 	print(query)
-	messages="도서 삭제가 완료되었습니다."
 	delete_book(query)
 	book_list = myPage_book(string)
+	messages="도서 삭제가 완료되었습니다."
 	return render_template('myPage.html', books=book_list, alert_messages=messages)
 	
 	

@@ -61,6 +61,7 @@ def search_book(string, type, start="0", end="30"):
 	return rows
 
 def borrow_booklog(query):
+	print("왔다")
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	#책 정보를 book_log 테이블에 입력
@@ -191,4 +192,14 @@ def delete_book(query):
 	cur.execute(sql,query)
 	conn.commit()
 	conn.close()
-
+	
+def get_name(email):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	print(email)
+	sql = "select email, name from user_info where email=%s"
+	cur.execute(sql,email)
+	register = cur.fetchone()
+	conn.commit()
+	conn.close()
+	return register
