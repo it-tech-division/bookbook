@@ -14,7 +14,21 @@
             <label for="recipient-name" class="control-label">도서명:</label>
             <input type="text" class="form-control" id="recipient-title" name="title" placeholder="{{book.title}}" readonly="true">
           </div>
+		  
+		  {% if session %}
 
+		  <div class="form-group col-lg">
+            <label for="recipient-name" class="control-label">신청자 이름 :</label>
+            <input type="text" class="form-control" id="recipient-name" name="borrower_name" value="{{register.name}}" required>
+          </div>
+		  <p><p>
+		  <div class="form-group col-lg">
+            <label for="recipient-name" class="control-label">이메일 :</label>
+            <input type="email" class="form-control" id="recipient-email" name="borrower_email" value="{{register.email}}" placeholder="ex)abcd@hyundai.com" required>
+          </div>
+		  
+		  {% else %}
+		  
 		  <div class="form-group col-lg">
             <label for="recipient-name" class="control-label">신청자 이름 :</label>
             <input type="text" class="form-control" id="recipient-name" name="borrower_name" required>
@@ -24,6 +38,8 @@
             <label for="recipient-name" class="control-label">이메일 :</label>
             <input type="email" class="form-control" id="recipient-email" name="borrower_email" placeholder="ex)abcd@hyundai.com" required>
           </div>
+		  
+		  {% endif %}
 		  <p>
           <div class="form-group col-lg">
             <label for="message-text" class="control-label">남기실 말씀 (선택사항):</label>
