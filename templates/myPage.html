@@ -3,8 +3,6 @@
 <script type="text/javascript" src="static/BarcodeReader.js"></script>
 <script>
 	function delete_book(delete_no){
-	alert(delete_no);
-	<!-- alert(document.getElementById('delete_no').value); -->
 	if(confirm('정말 삭제하시겠습니까?'))
 		document.getElementById('delete_no').value=delete_no;
 		document.getElementById('deleteForm').submit();
@@ -53,7 +51,8 @@
 		<div class="jumbotron">
 		<h3><h3><i class="fa fa-gift"></i> 나의 등록 현황</h3>
 		<hr>
-<form class="form-horizontal" id="registForm" name="registForm" method="get">	
+		
+<!-- 내가 등록한 도서 목록 -->
 			<div class="row">
 			  {% for book in books %}
 				{% if book.regit == 'regit' %}
@@ -80,7 +79,6 @@
 			</div>
 		</div>
 	</div>
-	</form>
 <form class="form-horizontal" id="deleteForm" name="deleteForm" action="/deleteBook" method="get">	
 	<input type="hidden" id="delete_no" name="delete_no" value=""></input>
 </form>
