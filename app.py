@@ -12,7 +12,6 @@ def index():
 	if 'email' in session:
 		email = session['email']
 		query = get_name(email)
-		print("이름찾아왔다")
 		print(query)
 		return render_template('home.html', books=book_list, register=query)
 	else:		
@@ -62,7 +61,6 @@ def search():
 	if 'email' in session:
 		email = session['email']
 		nameQuery = get_name(email)
-		print("이름찾아왔다")
 		print(query)
 		messages=""
 		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
@@ -86,7 +84,14 @@ def regist_book():
 	insert_book(query)
 	messages=query['title']+" 책 등록 성공"
 	book_list = search_book("%","title", "0", "30")
-	return render_template('home.html', books=book_list,alert_messages=messages)
+	
+	if 'email' in session:
+		email = session['email']
+		nameQuery = get_name(email)
+		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
+	else:		
+		messages="검색된 책이 없습니다."
+		return render_template('home.html', books=book_list, alert_messages=messages)
 
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
@@ -94,7 +99,6 @@ def borrow_book():
 	print(query)
 	borrow_booklog(query)
 	messages=query['title']+" 대여 신청 완료"
-	print("대여 완료~")
 	book_list = search_book("%","title", "0", "30")
 	return render_template('home.html', books=book_list,alert_messages=messages)
 
@@ -183,20 +187,24 @@ def myPage():
 	string = session['email']
 	print(string)
 	book_list = myPage_book(string)
-	return render_template('myPage.html', books=book_list)
+	query = get_name(string)
+	return render_template('myPage.html', books=book_list, register=query)
 	
 @app.route('/deleteBook')
 def deleteBook():
+	print("삭제하러 왔지")
 	string = session['email']
 	query=request.args['delete_no']
 	print(query)
 	delete_book(query)
 	book_list = myPage_book(string)
+	nameQuery=get_name(string)
 	messages="도서 삭제가 완료되었습니다."
-	return render_template('myPage.html', books=book_list, alert_messages=messages)
+	return render_template('myPage.html', books=book_list, register=nameQuery, alert_messages=messages)
 	
 	
 if __name__ == '__main__':
 	app.secret_key = 'sample_secreat_key'
+	#runner.debug=True
 	runner.run()
 	#	app.run(debug=True)
