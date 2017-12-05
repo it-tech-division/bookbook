@@ -39,7 +39,8 @@ def regist():
 		print(query)
 		return render_template('registBook.html', register=query)
 	else:	
-		return render_template('registBook.html')
+		messages="도서는 로그인 후에 등록 가능합니다."
+		return render_template('loginForm.html', alert_messages=messages)
 
 @app.route('/returns')
 def returns():
@@ -136,8 +137,27 @@ def regist_user():
 	query=request.form
 	print(query)
 	insert_user(query)
-	messages=query['name']+"님, 부끄부끄의 새가족이 되신것을 환영합니다."
-	return render_template('loginForm.html')	
+	session['email'] = request.form['email']
+	email = session['email']
+	nameQuery = get_name(email)
+	print(nameQuery)
+	messages=request.form['email']+"님 환영합니다."
+	book_list = search_book("%","title","0","30")
+	return render_template('home.html', books=book_list,alert_messages=messages, register=nameQuery)
+	
+	return render_template('home.html')	
+	
+@app.route('/checkEmail', methods=['POST'])
+def check_email():
+	email=request.form
+	print(email)
+	num=check_email(email)
+	if num :
+		messages="이미 사용중인 아이디입니다."
+	else : 
+		messages="사용 가능한 아이디입니다."
+	
+	return render_template('registUser.html', alert_messages=messages)	
 	
 	
 # test
@@ -175,7 +195,7 @@ def logout():
 	
 
 @app.route('/registUser')
-def registUser():
+def regist_user_form():
     return render_template('registUser.html')
 	
 @app.route('/findIdPw')
@@ -191,7 +211,7 @@ def myPage():
 	return render_template('myPage.html', books=book_list, register=query)
 	
 @app.route('/deleteBook')
-def deleteBook():
+def delete_book():
 	print("삭제하러 왔지")
 	string = session['email']
 	query=request.args['delete_no']

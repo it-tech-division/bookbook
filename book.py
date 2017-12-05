@@ -170,6 +170,14 @@ def insert_user(query):
 	cur.execute(sql,(query['name'],query['email'],query['password']))
 	conn.commit()
 	conn.close()
+	
+def check_email(email):
+	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
+	cur = conn.cursor(pymysql.cursors.DictCursor)
+	sql = "select 1 from user_info where email=%s"
+	cur.execute(sql, email)
+	conn.commit()
+	conn.close()
 
 	
 def myPage_book(string):
