@@ -7,7 +7,7 @@ runner = Runner(app)
 
 @app.route('/')
 def index():
-	book_list = search_book("%","title","0","30")
+	book_list = search_book("%","title","0","100000")
 	
 	if 'email' in session:
 		email = session['email']
@@ -66,8 +66,7 @@ def search():
 		messages=""
 		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
 	else:		
-		messages="검색된 책이 없습니다."
-		return render_template('home.html', books=book_list, alert_messages=messages)
+		return render_template('home.html', books=book_list)
 	
 	
 
@@ -84,7 +83,7 @@ def regist_book():
 	print(query)
 	insert_book(query)
 	messages=query['title']+" 책 등록 성공"
-	book_list = search_book("%","title", "0", "30")
+	book_list = search_book("%","title", "0", "100000")
 	
 	if 'email' in session:
 		email = session['email']
@@ -100,7 +99,7 @@ def borrow_book():
 	print(query)
 	borrow_booklog(query)
 	messages=query['title']+" 대여 신청 완료"
-	book_list = search_book("%","title", "0", "30")
+	book_list = search_book("%","title", "0", "100000")
 	return render_template('home.html', books=book_list,alert_messages=messages)
 
 @app.route('/approve_book', methods=['GET'])
@@ -142,7 +141,7 @@ def regist_user():
 	nameQuery = get_name(email)
 	print(nameQuery)
 	messages=request.form['email']+"님 환영합니다."
-	book_list = search_book("%","title","0","30")
+	book_list = search_book("%","title","0","100000")
 	return render_template('home.html', books=book_list,alert_messages=messages, register=nameQuery)
 	
 	return render_template('home.html')	
