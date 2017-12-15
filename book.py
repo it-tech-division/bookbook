@@ -76,8 +76,9 @@ def borrow_booklog(query):
 	sql = 'SELECT register_email,register,book_no FROM book_info where book_no=%s'
 	cur.execute(sql,(query['book_no']))
 	rows=cur.fetchall()
-	#print(rows)
-	send_mail("borrow", rows)
+	rows[0].update(query)
+	print(rows)
+	send_mail("borrow", rows[0])
 	conn.close()
 
 def approve_booklog(query):
@@ -91,15 +92,20 @@ def approve_booklog(query):
 	conn.close()
 
 def return_booksearch(query):
+	print(query['book_no'])
+	print('1234')
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	sql = "SELECT * FROM book_info JOIN book_log ON book_info.book_no=book_log.no where borrower=%s and borrower_email=%s"
-	#print(sql)
-	cur.execute(sql,(query['name'],query['email']))
-	rows=cur.fetchall()
-	conn.close
-	#print(rows)
-	return rows
+	sql = "UPDATE book_info set avalability=0 where book_no=%s"
+	#send_mail
+	cur.execute(sql,(query['book_no']))
+	conn.commit()
+	sql = "UPDATE book_log set return_date=CURDATE() where no=%s and borrower_email=%s"
+	#send_mail
+	cur.execute(sql,(query['book_no'],query['borrower_email']))
+	
+	conn.commit()
+	conn.close()
 
 def request_book_return(query):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
@@ -127,20 +133,30 @@ def confirm_book_return(query):
 	conn.close()
 
 def send_mail(status, data):
-
 	smtp = smtplib.SMTP('localhost')
 	#smtp.ehlo()      # say Hello
 	#smtp.starttls()  # TLS 사용시 필요
 
 	if status=="borrow":
-		f=open('tmp/borrow_notice.html','r')
+		f=open('static/borrow-mail.html','r')
 		mail_text=f.read()
+		print(data['borrower_name'])
+		mail_text=re.sub('borrow_name_input',data['borrower_name'],mail_text)
+		mail_text=re.sub('borrow_email_input',data['borrower_email'],mail_text)
+		mail_text=re.sub('borrow_request_input',data['message'],mail_text)
+		print(mail_text)
 		msg = MIMEText(mail_text,'html')
 		msg['Subject'] = '[BookBook]책 대여 요청'
 
 	if status=="return":
 		msg = MIMEText('본문 테스트 메시지')
 		msg['Subject'] = '[BookBook]책 반납 요청'
+		
+	if status=="bug":
+		msg = MIMEText(data['problem_detail'])
+		msg['Subject'] = '[BookBook] 버그 전달'
+		print(msg)
+		
 	msg['To'] = 'yh.kim@kia.com'
 	smtp.sendmail('bookbook@kia.com', 'yh.kim@kia.com', msg.as_string())
 	smtp.quit()
@@ -186,7 +202,7 @@ def myPage_book(string):
 	print("book.py : "+string)
 	#sql = 'SELECT * FROM book_info, book_log where book_info.book_no=book_log.no and (register_email=%s or borrower_email= %s)'
 	#sql = 'SELECT *,"regit" FROM book_info, book_log where book_info.book_no=book_log.no and register_email=%s union SELECT *,"borrow" FROM book_info, book_log where book_info.book_no=book_log.no and borrower_email=%s;'
-	sql = 'SELECT *, "regit" FROM book_info where register_email=%s UNION SELECT *, "borrow" FROM book_info WHERE book_no IN (SELECT no FROM book_log WHERE borrower_email=%s);'
+	sql = 'SELECT *, "regit" FROM book_info where register_email=%s UNION SELECT *, "borrow" FROM book_info WHERE book_no IN (SELECT no FROM book_log WHERE borrower_email=%s and return_date IS NULL);'
 	cur.execute(sql, (string, string))
 	rows = cur.fetchall()
 	conn.close()

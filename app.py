@@ -95,12 +95,20 @@ def regist_book():
 
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
-	query=request.form
+	query=request.form.to_dict()
 	print(query)
 	borrow_booklog(query)
 	messages=query['title']+" 대여 신청 완료"
+	print(messages)
 	book_list = search_book("%","title", "0", "100000")
-	return render_template('home.html', books=book_list,alert_messages=messages)
+	if 'email' in session:
+		email = session['email']
+		nameQuery = get_name(email)
+		print(query)
+		messages=""
+		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
+	else:		
+		return render_template('home.html', books=book_list)
 
 @app.route('/approve_book', methods=['GET'])
 def approve_book():
@@ -110,17 +118,13 @@ def approve_book():
 
 @app.route('/return_book', methods=['POST','GET'])
 def return_book():
+	string = session['email']
 	query = request.form
-	print(query)
-	borrow_bookinfo=return_booksearch(query)
-	#print (borrow_bookinfo)
-	
-	if 'email' in session:
-		email = session['email']
-		nameQuery = get_name(email)
-		return render_template("returnBook.html",books=borrow_bookinfo, register=nameQuery)
-	else:				
-		return render_template("returnBook.html",books=borrow_bookinfo)
+	return_booksearch(query)
+	messages=query['title']+"반납신청 완료"
+	book_list = myPage_book(string)
+	query = get_name(string)
+	return render_template('myPage.html', books=book_list, register=query, alert_messages=messages)
 
 @app.route('/return_book_procees1', methods=['POST','GET'])
 def return_book_procees1():
@@ -220,6 +224,21 @@ def delete_book():
 	nameQuery=get_name(string)
 	messages="도서 삭제가 완료되었습니다."
 	return render_template('myPage.html', books=book_list, register=nameQuery, alert_messages=messages)
+	
+@app.route('/bug_send',methods=['POST','GET'])
+def bug_send():
+	query=request.form
+	print(query['problem_detail'])
+	send_mail("bug", query)
+	book_list = search_book("%","title", "0", "100000")
+	messages="버그가 접수 되었습니다. "
+	if 'email' in session:
+		email = session['email']
+		nameQuery = get_name(email)
+		print(query)
+		return render_template('home.html', books=book_list, register=nameQuery, alert_messages=messages)
+	else:		
+		return render_template('home.html', books=book_list, alert_messages=messages)
 	
 	
 if __name__ == '__main__':
