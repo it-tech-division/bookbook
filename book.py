@@ -157,8 +157,8 @@ def send_mail(status, data):
 		msg['Subject'] = '[BookBook] 버그 전달'
 		print(msg)
 		
-	msg['To'] = 'yh.kim@kia.com'
-	smtp.sendmail('bookbook@kia.com', 'yh.kim@kia.com', msg.as_string())
+	msg['To'] = 'yeonji1122@kia.com'
+	smtp.sendmail('bookbook@kia.com', 'yeonji1122@kia.com', msg.as_string())
 	smtp.quit()
 
 def login_process(email, password):
