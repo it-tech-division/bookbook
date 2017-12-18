@@ -26,7 +26,7 @@
 		<div class="col-lg">
 		  <div class="input-group">
 			<input type="email" id="email" name="email" class="form-control" placeholder="이메일을 입력하세요." required>
-			<button class="btn btn-default btn-sm" onclick="checkEmailAddr();">중복체크</button> 
+			<!--<button class="btn btn-default btn-sm" onclick="checkEmailAddr();">중복체크</button> --> 
 		  </div>
 			<div style="color:blue;">
 			Email을 다시 한 번 확인해주세요. 잘못된 Email 주소를 입력할 시 대여/반납 처리가 불가능합니다.
@@ -81,30 +81,38 @@
 			<button type="button" onclick="return registUser()" class="btn btn-primary btn-lg btn-block">부끄부끄 가입</button>
 		</div>
 	</div>
-	<form id="checkEmailForm" name="checkEmailForm" action="/checkEmail" method="post">
+	<!--<form id="checkEmailForm" name="checkEmailForm" action="/checkEmail" method="post">
 		<input type="hidden" id="hiddenEmail" name="hiddenEmail" value="">
-	</form>
+	</form>-->
 	
 </form>
 
 
 <script type="text/javascript">
  function checkPass(){
+		var check = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}$/;
+ 
 	   if (document.getElementById("password").value != document.getElementById("pass2").value) {
 		   alert("password를 확인해주세요!");
 		   return false;
+	   }else if(document.getElementById("password").value.length <8 || document.getElementById("password").value.length >20 ){
+		   alert("password는 8자 이상, 20자 이내여야 합니다.");
+		   return false;
+	   }else if(!check.test(document.getElementById("password").value)) {
+		   alert("password는 영문+숫자+특수문자 포함 8자 이상, 20자 이내여야 합니다.");
+		   return false;			
 	   }else {
 		   return true;
 	   }
    }
    
-function checkEmailAddr() {
+/*function checkEmailAddr() {
 	alert("");
 	var email = document.getElementById("email").value
 	document.getElementById("hiddenEmail").value = email
 	
 	document.checkEmailForm.submit();
-}
+}*/
    
  /*function checkEmail2(){
  
@@ -122,18 +130,13 @@ function checkEmailAddr() {
 	}
    }*/
    
- function registUser() {
+ function registUser() { 
    if (checkPass() == false) {
 	   return false;
    }else if(!agree.checked) { 
-	   alert("개인정보 수집에 동의해주세요!")
+	   alert("개인정보 수집에 동의해주세요!");
 	   return false;
-   }else if(document.getElementById("hiddenEmail").value == ""){
-	   alert("Email 중복체크를 실시해주세요!")
    }else {
-	   return true;
-   }
-   else {
 	   document.registForm.submit();
    }
 	   
