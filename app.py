@@ -96,8 +96,9 @@ def regist_book():
 @app.route('/borrow_book', methods=['POST','GET'])
 def borrow_book():
 	query=request.form.to_dict()
-	print(query)
-	borrow_booklog(query)
+	print('query :', query)
+	book_info = get_book_info(query['book_no'])
+	borrow_booklog(query, book_info)
 	messages=query['title']+" 대여 신청 완료"
 	print(messages)
 	book_list = search_book("%","title", "0", "100000")
@@ -120,7 +121,9 @@ def approve_book():
 def return_book():
 	string = session['email']
 	query = request.form
-	return_booksearch(query)
+	print('반납 query 정보 :', query)
+	book_info = get_book_info(query['book_no'])
+	return_booksearch(query, book_info)
 	messages=query['title']+"반납신청 완료"
 	book_list = myPage_book(string)
 	query = get_name(string)
