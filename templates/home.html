@@ -39,7 +39,11 @@
                 {% elif book.avalability == '2' %}
                   <button class="btn btn-dark disabled float-right btn-sm" aria-disabled="true" data-toggle="modal">대여 중</button>
                 {% else %}
-                  <button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}">대여하기</button>
+					{%if session%}
+						<button class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#{{book.book_no}}">대여하기</button>
+						{%else%}
+						<button class="btn btn-danger float-right btn-sm" onclick="alert('로그인 후 대여 가능합니다!')">대여하기</button>
+					{% endif %}  
                 {% endif %}
               </div>
             </div>
