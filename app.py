@@ -141,14 +141,16 @@ def return_book_procees1():
 @app.route('/regist_user', methods=['POST','GET'])
 def regist_user():
 	query=request.form
-	insert_user(query)
 	email = query['email']
 	emailCheck = check_email(email);
+	print("::", emailCheck)
 	
-	if emailCheck['1'] == 1 :
+	#if emailCheck['email'] == email :
+	if emailCheck :
 		messages="이미 사용중인 Email 입니다."
 		return render_template('registUser.html', alert_messages=messages)	
 	else : 
+		insert_user(query)
 		session['email'] = request.form['email']
 		nameQuery = get_name(email)
 		messages=request.form['email']+"님 환영합니다."

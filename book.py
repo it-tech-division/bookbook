@@ -213,7 +213,7 @@ def insert_user(query):
 def check_email(email):
 	conn = pymysql.connect(host=HOST, user=DB_USER, password=DB_PWD, db=DB_NAME, charset='utf8')
 	cur = conn.cursor(pymysql.cursors.DictCursor)
-	sql = "select 1 from user_info where email=%s"
+	sql = "select * from user_info where email=%s"
 	cur.execute(sql, email)
 	emailCheck = cur.fetchone()
 	conn.commit()
