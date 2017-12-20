@@ -86,7 +86,7 @@
 			</div>
 			<!-- <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me <br><br> -->
 			<div class="text-center">
-				<button class="btn btn-lg btn-unique btn-block" type="submit"> Login </button>
+				<button class="btn btn-lg btn-unique btn-block" onclick="return formCheck()"> Login </button>
 			</div>
 			<div class="text-center">
 			<br><a href="/registUser" style="color:gray;"><i class="fa fa-user prefix grey-text"></i> 회원가입 </a> <!-- &emsp;  <a href="/registUser" style="color:gray;"><i class="fa fa-key prefix grey-text"></i> ID/PASSWORD 찾기 </a> -->
@@ -97,6 +97,28 @@
 	
    
   </body>
+  
+  <script>
+	function checkPass(){
+		var check = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=])(?=.*[0-9]).{6,16}$/;
+ 
+		if(!check.test(document.getElementById("password").value)) {
+			alert("Email과 비밀번호를 다시 확인해주세요.");
+			return false;			
+		}else {
+			return true;
+		}
+	}
+	
+	function formCheck() { 
+		if (checkPass() == false) {
+			alert("Email과 비밀번호를 다시 확인해주세요.");
+			return false;
+		} else {
+			document.loginForm.submit();
+		}
+	}
+  </script>
 </html>
 
 
