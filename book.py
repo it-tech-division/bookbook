@@ -215,8 +215,10 @@ def check_email(email):
 	cur = conn.cursor(pymysql.cursors.DictCursor)
 	sql = "select 1 from user_info where email=%s"
 	cur.execute(sql, email)
+	emailCheck = cur.fetchone()
 	conn.commit()
 	conn.close()
+	return emailCheck
 
 	
 def myPage_book(string):
